@@ -19,6 +19,8 @@ User | testaccountuser
 -----|-----
 Password | yu54ybger4cf6hw4
 
+### Process
+
 ##### Stage 1: Authorize Payment
 Stage 1 will be a basic payment method implementation, with a CC form, and a few actions to authorize and capture payment, and report back to Magento.
 
