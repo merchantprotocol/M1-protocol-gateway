@@ -11,6 +11,14 @@ Create a direct Payment Method for the NMI gateway
 - Customer can edit each of their cards
 - Customers saved cards show up as a bullet point just like all of the other payment methods do. A bullet point per saved card.
 
+### Documentation
+
+[Integration](https://merchantprotocol.transactiongateway.com/merchants/resources/integration/integration_portal.php)
+
+User | testaccountuser
+-----|-----
+Password | yu54ybger4cf6hw4
+
 ##### Stage 1: Authorize Payment
 Stage 1 will be a basic payment method implementation, with a CC form, and a few actions to authorize and capture payment, and report back to Magento.
 
