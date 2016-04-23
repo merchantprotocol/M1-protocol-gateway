@@ -22,7 +22,9 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
      */
     const TRXTYPE_AUTH_ONLY         = 'auth';
     const TRXTYPE_SALE              = 'sale';
+    const TRXTYPE_REFUND			= 'refund';
     const TRXTYPE_CREDIT            = 'credit';
+    const TRXTYPE_DELAYED_VOID		= 'void';
 
     /**
      * Response codes
@@ -44,7 +46,7 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
     protected $_canUseInternal          = true;
     protected $_canUseCheckout          = true;
     protected $_canUseForMultishipping  = true;
-    protected $_canSaveCc = false;
+    protected $_canSaveCc = true;
     protected $_isProxy = false;
     protected $_canFetchTransactionInfo = true;
 
@@ -144,6 +146,87 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
                 $payment->setTransactionId($response->getTransactionid())->setIsTransactionClosed(0);
                 $payment->setIsTransactionPending(true);
                 break;
+        }
+        return $this;
+    }
+
+    /**
+     * Void payment
+     *
+     * @param Mage_Sales_Model_Order_Payment $payment
+     * @return MP_Gateway_Model_Payment
+     */
+    public function void(Varien_Object $payment)
+    {
+        $request = $this->_buildBasicRequest($payment);
+        $request->setType(self::TRXTYPE_DELAYED_VOID);
+        $request->setTransactionid($payment->getParentTransactionId());
+        $response = $this->_postRequest($request);
+        $this->_processErrors($response);
+
+        if ($response->getResultCode() == self::RESPONSE_CODE_APPROVED){
+            $payment->setTransactionId($response->getTransactionid())
+                ->setIsTransactionClosed(1)
+                ->setShouldCloseParentTransaction(1);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Check void availability
+     *
+     * @param   Varien_Object $payment
+     * @return  bool
+     */
+    public function canVoid(Varien_Object $payment)
+    {
+        if ($payment instanceof Mage_Sales_Model_Order_Invoice
+            || $payment instanceof Mage_Sales_Model_Order_Creditmemo
+        ) {
+            return false;
+        }
+        if ($payment->getAmountPaid()) {
+            $this->_canVoid = false;
+        }
+
+        return $this->_canVoid;
+    }
+
+    /**
+     * Attempt to void the authorization on cancelling
+     *
+     * @param Varien_Object $payment
+     * @return MP_Gateway_Model_Payment
+     */
+    public function cancel(Varien_Object $payment)
+    {
+        if (!$payment->getOrder()->getInvoiceCollection()->count()) {
+            return $this->void($payment);
+        }
+
+        return false;
+    }
+
+    /**
+     * Refund capture
+     *
+     * @param Mage_Sales_Model_Order_Payment $payment
+     * @return MP_Gateway_Model_Payment
+     */
+    public function refund(Varien_Object $payment, $amount)
+    {
+        $request = $this->_buildBasicRequest($payment);
+        $request->setType(self::TRXTYPE_REFUND);
+        $request->setTransactionid($payment->getParentTransactionId());
+        $request->setAmount(round($amount,2));
+        $response = $this->_postRequest($request);
+        $this->_processErrors($response);
+
+        if ($response->getResultCode() == self::RESPONSE_CODE_APPROVED){
+            $payment->setTransactionId($response->getTransactionid())
+                ->setIsTransactionClosed(1);
+            $payment->setShouldCloseParentTransaction(!$payment->getCreditmemo()->getInvoice()->canRefund());
         }
         return $this;
     }
