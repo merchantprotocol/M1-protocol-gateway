@@ -1,0 +1,44 @@
+## General          
+!.gitignore
+!.editorconfig
+!readme.md
+~*
+*.sublime-project
+*.sublime-workspace
+*.komodoproject
+*.log
+*.sql
+*.sqlite
+error_log
+.buildpath
+.project
+.settings
+
+## WordPress Ignores
+wp-content/plugins/hello.php
+wp-content/themes/twenty*/
+wp-config.php
+
+
+## Magento Ignores
+.htaccess.sample
+.modgit/
+.modman/
+app/etc/local.xml*
+var/cache/*
+var/session/*
+var/log/*
+var/report/*
+var/locks/*
+var/importexport/*
+media/catalog/product/cache/*
+index.php.sample
+php.ini.sample
+LICENSE_AFL.txt
+LICENSE.html
+LICENSE.txt
+LICENSE_EE*
+RELEASE_NOTES.txt
+downloader/.cache
+downloader/cache.cfg
+downloader/connect.cfg
