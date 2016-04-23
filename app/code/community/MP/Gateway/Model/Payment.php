@@ -208,9 +208,12 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
         if (!empty($order)) {
             $orderIncrementId = $order->getIncrementId();
 
-            $request->setIpaddress(Mage::helper('core/http')->getRemoteAddr(true))
+            $request->setIpaddress($_SERVER['REMOTE_ADDR'])
                 ->setCurrency($order->getBaseCurrencyCode())
+                ->setTax($order->getTaxAmount())
+                ->setShipping($order->getShippingAmount())
                 ->setOrderid($order->getId())
+                ->setPonumber(null)
                 ->setOrderdescription($orderIncrementId);
 
             $customerId = $order->getCustomerId();
