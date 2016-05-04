@@ -9,7 +9,7 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
 {
     protected $_code  = 'mp_gateway';
     protected $_formBlockType = 'mp_gateway/form_gateway';
-    //protected $_infoBlockType = 'payment/info_cc';
+    protected $_infoBlockType = 'mp_gateway/info_gateway';
 
     /**
      * Gateway request URLs
@@ -25,6 +25,9 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
     const TRXTYPE_REFUND			= 'refund';
     const TRXTYPE_CREDIT            = 'credit';
     const TRXTYPE_DELAYED_VOID		= 'void';
+
+    const TRXTYPE_VAULT_ADD         = 'add_customer';
+    const TRXTYPE_VAULT_DEL         = 'delete_customer';
 
     /**
      * Response codes
@@ -55,19 +58,95 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
      */
     protected $_clientTimeout = 45;
 
+    /**
+     * Assign data to info model instance
+     *
+     * @param   mixed $data
+     * @return  Mage_Payment_Model_Info
+     */
+    public function assignData($data)
+    {
+        if (!($data instanceof Varien_Object)) {
+            $data = new Varien_Object($data);
+        }
+
+        parent::assignData($data);
+
+        $info = $this->getInfoInstance();
+
+        $additionalData = array(
+            'cc_vault_id'   => $data->getCcVaultId(),
+            'card_save'     => $data->getCardSave()
+        );
+
+        $info->setAdditionalInformation($additionalData);
+
+        return $this;
+    }
+
+    /**
+     * Validate payment method information object
+     *
+     * @param   Mage_Payment_Model_Info $info
+     * @return  Mage_Payment_Model_Abstract
+     */
+    public function validate()
+    {
+        $paymentPost = Mage::app()->getRequest()->getPost('payment');
+
+        //If a vault ID is specified, skip validation
+        if (isset($paymentPost['cc_vault_id']) && !empty($paymentPost['cc_vault_id']))
+            return $this;
+
+        /*
+        * calling parent validate function
+        */
+        parent::validate();
+    }
+
+    /**
+     * Check if customer needs to be added or retrieved from the vault
+     *
+     * @param Mage_Sales_Model_Order_Payment $payment
+     * @param Varien_Object $request
+     * @param float $amount
+     * @return MP_Gateway_Model_Payment
+     */
+    protected function checkVault(Varien_Object $payment, &$request, $amount)
+    {
+        $paymentPost = Mage::app()->getRequest()->getPost('payment');
+
+    	if (!empty($paymentPost['cc_vault_id'])) {
+
+    		$vaultId = $paymentPost['cc_vault_id'];
+	    	if(Mage::getModel('mp_gateway/card')->isValidVault($vaultId)) {
+                //If we pay, then this is just a basic request
+                $request = $this->_buildBasicRequest($payment, $amount);
+	    		$request->setCustomerVaultId($vaultId);
+            }
+
+    	} elseif (isset($paymentPost['save_card']) && (int)$paymentPost['save_card']) {
+    		$this->vaultAdd($payment, $amount);
+    	}
+
+    	return $this;
+    }
 
     /**
      * Authorize payment
      *
      * @param Mage_Sales_Model_Order_Payment $payment
+     * @param float $amount
      * @return MP_Gateway_Model_Payment
      */
-
     public function authorize(Varien_Object $payment, $amount)
     {
         $request = $this->_buildPlaceRequest($payment, $amount);
         $request->setType(self::TRXTYPE_AUTH_ONLY);
         $this->_setReferenceTransaction($payment, $request);
+
+    	$this->checkVault($payment, $request, $amount);
+
         $response = $this->_postRequest($request);
         $this->_processErrors($response);
 
@@ -96,7 +175,7 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
         $authorizedAmount = round($infoInstance->getAmountAuthorized(), 2);
         return $amountToPay != $authorizedAmount ? $amountToPay : 0;
     }
-    
+
     /**
       * If response is failed throw exception
       *
@@ -113,6 +192,7 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
      * Capture payment
      *
      * @param Mage_Sales_Model_Order_Payment $payment
+     * @param float $amount
      * @return MP_Gateway_Model_Payment
      */
     public function capture(Varien_Object $payment, $amount)
@@ -122,7 +202,7 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
             $request->setTrxtype(self::TRXTYPE_SALE);
             $request->setOrigid($payment->getReferenceTransactionId());
         } elseif ($payment->getParentTransactionId()) {
-            $request = $this->_buildBasicRequest($payment);
+            $request = $this->_buildBasicRequest($payment, $amount);
             $request->setOrigid($payment->getParentTransactionId());
             $captureAmount = $this->_getCaptureAmount($amount);
             if ($captureAmount) {
@@ -134,6 +214,8 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
             $request = $this->_buildPlaceRequest($payment, $amount);
             $request->setType(self::TRXTYPE_SALE);
         }
+
+    	$this->checkVault($payment, $request, $amount);
 
         $response = $this->_postRequest($request);
         $this->_processErrors($response);
@@ -158,7 +240,7 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
      */
     public function void(Varien_Object $payment)
     {
-        $request = $this->_buildBasicRequest($payment);
+        $request = $this->_buildBasicRequest($payment, $amount);
         $request->setType(self::TRXTYPE_DELAYED_VOID);
         $request->setTransactionid($payment->getParentTransactionId());
         $response = $this->_postRequest($request);
@@ -216,7 +298,7 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
      */
     public function refund(Varien_Object $payment, $amount)
     {
-        $request = $this->_buildBasicRequest($payment);
+        $request = $this->_buildBasicRequest($payment, $amount);
         $request->setType(self::TRXTYPE_REFUND);
         $request->setTransactionid($payment->getParentTransactionId());
         $request->setAmount(round($amount,2));
@@ -233,7 +315,7 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
 
     /**
      * Getter for URL to perform Gateway requests, based on test mode by default
-     * 
+     *
      * @param bool $testMode Ability to specify test mode using
      * @return string
      */
@@ -252,13 +334,28 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
       * @param Mage_Sales_Model_Order_Payment $payment
       * @return Varien_Object
       */
-    protected function _buildBasicRequest(Varien_Object $payment)
+    protected function _buildBasicRequest(Varien_Object $payment, $amount)
     {
         $request = new Varien_Object();
         $request
             ->setUsername($this->getConfigData('user'))
             ->setPassword($this->getConfigData('pwd'))
-            ->setRequestId($this->_generateRequestId());
+            ->setRequestId($this->_generateRequestId())
+            ->setAmount(round($amount,2));
+
+        $order = $payment->getOrder();
+        if (!empty($order)) {
+            $orderIncrementId = $order->getIncrementId();
+
+            $request->setIpaddress($_SERVER['REMOTE_ADDR'])
+                ->setCurrency($order->getBaseCurrencyCode())
+                ->setTax($order->getTaxAmount())
+                ->setShipping($order->getShippingAmount())
+                ->setOrderid($order->getId())
+                ->setPonumber(null)
+                ->setOrderdescription($orderIncrementId);
+        }
+
         return $request;
     }
 
@@ -281,9 +378,12 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
       */
     protected function _buildPlaceRequest(Varien_Object $payment, $amount)
     {
-        $request = $this->_buildBasicRequest($payment);
-        $request->setAmount(round($amount,2));
+        $request = $this->_buildBasicRequest($payment, $amount);
+
+        $request->setCctype($payment->getCcType());
         $request->setCcnumber($payment->getCcNumber());
+        $request->setCcexpmon($payment->getCcExpMonth());
+        $request->setCcexpyear($payment->getCcExpYear());
         $request->setCcexp(sprintf('%02d',$payment->getCcExpMonth()) . substr($payment->getCcExpYear(),-2,2));
         $request->setCvv($payment->getCcCid());
 
@@ -291,17 +391,9 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
         if (!empty($order)) {
             $orderIncrementId = $order->getIncrementId();
 
-            $request->setIpaddress($_SERVER['REMOTE_ADDR'])
-                ->setCurrency($order->getBaseCurrencyCode())
-                ->setTax($order->getTaxAmount())
-                ->setShipping($order->getShippingAmount())
-                ->setOrderid($order->getId())
-                ->setPonumber(null)
-                ->setOrderdescription($orderIncrementId);
-
             $customerId = $order->getCustomerId();
             if ($customerId) {
-                $request->setCustref($customerId);
+                $request->setCustomerId($customerId);
             }
 
             $billing = $order->getBillingAddress();
@@ -332,7 +424,7 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
                     ->setShippingCountry($shipping->getCountry())
                     ->setShippingEmail($payment->getOrder()->getCustomerEmail());
             }
-        } 
+        }
         return $request;
     }
 
@@ -391,6 +483,47 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
      */
     protected function _setReferenceTransaction(Varien_Object $payment, $request)
     {
+        return $this;
+    }
+
+    /**
+     * Void payment
+     *
+     * @param Mage_Sales_Model_Order_Payment $payment
+     * @param float $amount
+     * @return MP_Gateway_Model_Payment
+     */
+    public function vaultAdd(Varien_Object $payment, $amount)
+    {
+        $request = $this->_buildPlaceRequest($payment, $amount);
+        $request->setCustomerVault(self::TRXTYPE_VAULT_ADD);
+        $response = $this->_postRequest($request);
+        $this->_processErrors($response);
+
+        if ($response->getResultCode() == self::RESPONSE_CODE_APPROVED) {
+
+            $card = Mage::getModel('mp_gateway/card')->addCard($request, $response);
+        }
+
+        return $this;
+    }
+
+    public function vaultDel($vaultId)
+    {
+    	if (!Mage::getModel('mp_gateway/card')->isValidVault($vaultId))
+    		Mage::throwException('Invalid Vault Id');
+
+        $request = $this->_buildBasicRequest($payment, $amount);
+        $request->setCustomerVault(self::TRXTYPE_VAULT_DEL);
+        $request->setCustomerVaultId($vaultId);
+        $response = $this->_postRequest($request);
+        $this->_processErrors($response);
+
+        if ($response->getResultCode() == self::RESPONSE_CODE_APPROVED) {
+
+            $card = Mage::getModel('mp_gateway/card')->deleteCard($vaultId);
+        }
+
         return $this;
     }
 }

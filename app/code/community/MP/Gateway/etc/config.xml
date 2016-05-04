@@ -17,7 +17,14 @@
         <models>
             <mp_gateway>
                 <class>MP_Gateway_Model</class>
+                <resourceModel>mp_gateway_resource</resourceModel>
             </mp_gateway>
+            <mp_gateway_resource>
+              <class>MP_Gateway_Model_Resource</class>
+                <entities>
+                    <card><table>mp_gateway_cards</table></card>
+                </entities>
+            </mp_gateway_resource>
         </models>
         <blocks>
             <mp_gateway>
@@ -29,6 +36,14 @@
                 <class>MP_Gateway_Helper</class>
             </mp_gateway>
         </helpers>
+        <resources>
+            <mp_gateway_setup>
+                <setup>
+                    <module>MP_Gateway</module>
+                    <class>Mage_Eav_Model_Entity_Setup</class>
+                </setup>
+            </mp_gateway_setup>
+        </resources>
     </global>
 
     <adminhtml>
@@ -52,6 +67,26 @@
             </resources>
         </acl>
     </adminhtml>
+
+    <frontend>
+        <layout>
+            <updates>
+                <mp_gateway module="MP_Gateway">
+                    <file>mp_gateway.xml</file>
+                </mp_gateway>
+            </updates>
+        </layout>
+
+        <routers>
+            <mp_gateway>
+                <use>standard</use>
+                <args>
+                    <module>MP_Gateway</module>
+                    <frontName>mpgateway</frontName>
+                </args>
+            </mp_gateway>
+        </routers>
+    </frontend>
 
     <default>
         <payment>

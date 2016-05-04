@@ -1,0 +1,39 @@
+<?php
+/**
+ * @author Fran Mayers (https://merchantprotocol.com)
+ * @copyright  Copyright (c) 2016 Merchant Protocol
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+
+?>
+<?php $cards = $this->getSavedCards(); ?>
+
+<div class="page-title">
+    <h1><?php echo $this->__('My Saved Cards') ?></h1>
+</div>
+
+<?php echo $this->getMessagesBlock()->toHtml() ?>
+
+<p class="note-msg"><?php echo $this->__('Tick "Save this card for later use" during checkout to add new cards') ?></p>
+
+<div class="fieldset">
+
+    <?php if(count($cards)): ?>
+
+        <h2 class="legend"><?php echo $this->__('Cards') ?></h2>
+        <ul class="mpgateway-cards-list">
+        <?php foreach ($cards as $card): ?>
+            <li>
+                <?php echo $card->render(); ?>
+                <span class="remove-link">
+                    <a href="<?php echo $this->getRemoveUrl($card); ?>" onclick="return confirm('Are you sure?')" title="Delete this card"><?php echo $this->__('Remove'); ?></a>
+                </span>
+            </li>
+        <?php endforeach; ?>
+        </ul>
+
+    <?php else: ?>
+        <p class="note-msg"><?php echo $this->__('There are no cards saved under your account at the moment.') ?></p>
+    <?php endif; ?>
+
+</div>
