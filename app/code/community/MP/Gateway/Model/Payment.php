@@ -6,6 +6,7 @@
  */
 
 class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
+	implements Mage_Payment_Model_Recurring_Profile_MethodInterface
 {
     protected $_code  = 'mp_gateway';
     protected $_formBlockType = 'mp_gateway/form_gateway';
@@ -26,9 +27,6 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
     const TRXTYPE_CREDIT            = 'credit';
     const TRXTYPE_DELAYED_VOID		= 'void';
 
-    const TRXTYPE_VAULT_ADD         = 'add_customer';
-    const TRXTYPE_VAULT_DEL         = 'delete_customer';
-
     /**
      * Response codes
      */
@@ -39,24 +37,37 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
     /**
      * Availability options
      */
-    protected $_isGateway               = true;
-    protected $_canAuthorize            = true;
-    protected $_canCapture              = true;
-    protected $_canCapturePartial       = true;
-    protected $_canRefund               = true;
-    protected $_canRefundInvoicePartial = true;
-    protected $_canVoid                 = true;
-    protected $_canUseInternal          = true;
-    protected $_canUseCheckout          = true;
-    protected $_canUseForMultishipping  = true;
-    protected $_canSaveCc = true;
-    protected $_isProxy = false;
-    protected $_canFetchTransactionInfo = true;
+    protected $_isGateway               	= true;
+    protected $_canAuthorize            	= true;
+    protected $_canCapture              	= true;
+    protected $_canCapturePartial       	= true;
+    protected $_canRefund               	= true;
+    protected $_canRefundInvoicePartial 	= true;
+    protected $_canVoid                 	= true;
+    protected $_canUseInternal          	= true;
+    protected $_canUseCheckout          	= true;
+    protected $_canUseForMultishipping  	= true;
+    protected $_canSaveCc 					= true;
+    protected $_isProxy 					= false;
+    protected $_canFetchTransactionInfo 	= true;
+    protected $_canManageRecurringProfiles  = false;
 
     /**
      * Gateway request timeout
      */
     protected $_clientTimeout = 45;
+
+    protected $_saveCard = false;
+
+    protected function getVault()
+    {
+    	return Mage::getSingleton('mp_gateway/vault');
+    }
+
+    protected function getRecurring()
+    {
+    	return Mage::getSingleton('mp_gateway/recurring');
+    }
 
     /**
      * Assign data to info model instance
@@ -126,7 +137,7 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
             }
 
     	} elseif (isset($paymentPost['save_card']) && (int)$paymentPost['save_card']) {
-    		$this->vaultAdd($payment, $amount);
+    		$this->_saveCard = true;
     	}
 
     	return $this;
@@ -153,6 +164,8 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
         switch ($response->getResultCode()){
             case self::RESPONSE_CODE_APPROVED:
                 $payment->setTransactionId($response->getTransactionid())->setIsTransactionClosed(0);
+                if ($this->_saveCard)
+    				$this->getVault()->addDetails($payment, $amount);
                 break;
             case self::RESPONSE_CODE_DECLINED:
                 $payment->setTransactionId($response->getTransactionid())->setIsTransactionClosed(0);
@@ -223,6 +236,8 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
         switch ($response->getResultCode()){
             case self::RESPONSE_CODE_APPROVED:
                 $payment->setTransactionId($response->getTransactionid())->setIsTransactionClosed(0);
+                if ($this->_saveCard)
+    				$this->getVault()->addDetails($payment, $amount);
                 break;
             case self::RESPONSE_CODE_DECLINED:
                 $payment->setTransactionId($response->getTransactionid())->setIsTransactionClosed(0);
@@ -334,14 +349,16 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
       * @param Mage_Sales_Model_Order_Payment $payment
       * @return Varien_Object
       */
-    protected function _buildBasicRequest(Varien_Object $payment, $amount)
+    protected function _buildBasicRequest(Varien_Object $payment, $amount = null)
     {
         $request = new Varien_Object();
         $request
             ->setUsername($this->getConfigData('user'))
             ->setPassword($this->getConfigData('pwd'))
-            ->setRequestId($this->_generateRequestId())
-            ->setAmount(round($amount,2));
+            ->setRequestId($this->_generateRequestId());
+
+        if (!is_null($amount))
+            $request->setAmount(round($amount,2));
 
         $order = $payment->getOrder();
         if (!empty($order)) {
@@ -486,44 +503,68 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
         return $this;
     }
 
-    /**
-     * Void payment
+        /**
+     * Validate data
      *
-     * @param Mage_Sales_Model_Order_Payment $payment
-     * @param float $amount
-     * @return MP_Gateway_Model_Payment
+     * @param Mage_Payment_Model_Recurring_Profile $profile
+     * @throws Mage_Core_Exception
      */
-    public function vaultAdd(Varien_Object $payment, $amount)
+    public function validateRecurringProfile(Mage_Payment_Model_Recurring_Profile $profile)
     {
-        $request = $this->_buildPlaceRequest($payment, $amount);
-        $request->setCustomerVault(self::TRXTYPE_VAULT_ADD);
-        $response = $this->_postRequest($request);
-        $this->_processErrors($response);
-
-        if ($response->getResultCode() == self::RESPONSE_CODE_APPROVED) {
-
-            $card = Mage::getModel('mp_gateway/card')->addCard($request, $response);
-        }
-
         return $this;
     }
 
-    public function vaultDel($vaultId)
+    /**
+     * Submit to the gateway
+     *
+     * @param Mage_Payment_Model_Recurring_Profile $profile
+     * @param Mage_Payment_Model_Info $paymentInfo
+     */
+    public function submitRecurringProfile(Mage_Payment_Model_Recurring_Profile $profile, Mage_Payment_Model_Info $paymentInfo)
     {
-    	if (!Mage::getModel('mp_gateway/card')->isValidVault($vaultId))
-    		Mage::throwException('Invalid Vault Id');
-
-        $request = $this->_buildBasicRequest($payment, $amount);
-        $request->setCustomerVault(self::TRXTYPE_VAULT_DEL);
-        $request->setCustomerVaultId($vaultId);
-        $response = $this->_postRequest($request);
-        $this->_processErrors($response);
-
-        if ($response->getResultCode() == self::RESPONSE_CODE_APPROVED) {
-
-            $card = Mage::getModel('mp_gateway/card')->deleteCard($vaultId);
-        }
-
+    	$this->getRecurring()->addSubscription($profile, $paymentInfo);
         return $this;
     }
+
+    /**
+     * Fetch details
+     *
+     * @param string $referenceId
+     * @param Varien_Object $result
+     */
+    public function getRecurringProfileDetails($referenceId, Varien_Object $result)
+    {
+        return $this;
+    }
+
+    /**
+     * Check whether can get recurring profile details
+     *
+     * @return bool
+     */
+    public function canGetRecurringProfileDetails()
+    {
+        return $this;
+    }
+
+    /**
+     * Update data
+     *
+     * @param Mage_Payment_Model_Recurring_Profile $profile
+     */
+    public function updateRecurringProfile(Mage_Payment_Model_Recurring_Profile $profile)
+    {
+        return $this;
+    }
+
+    /**
+     * Manage status
+     *
+     * @param Mage_Payment_Model_Recurring_Profile $profile
+     */
+    public function updateRecurringProfileStatus(Mage_Payment_Model_Recurring_Profile $profile)
+    {
+        return $this;
+    }
+
 }

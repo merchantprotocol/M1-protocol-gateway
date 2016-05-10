@@ -12,6 +12,21 @@ class MP_Gateway_Model_Card extends Mage_Core_Model_Abstract
         $this->_init('mp_gateway/card');
     }
 
+    protected function getCustomerId()
+    {
+        if (Mage::app()->getStore()->isAdmin()) {
+            $customer = Mage::getSingleton('adminhtml/session_quote')->getCustomer();
+        }
+        else {
+            if (!Mage::getSingleton('customer/session')->isLoggedIn())
+                return false;
+
+            $customer = Mage::getSingleton('customer/session')->getCustomer();
+        }
+
+        return !is_null($customer) ? (int)$customer->getId() : false;
+    }
+
     /**
      * Return Collection of cards for current customer
      *
@@ -20,10 +35,10 @@ class MP_Gateway_Model_Card extends Mage_Core_Model_Abstract
 
     public function getCustomerCollection()
     {
-        if (!Mage::getSingleton('customer/session')->isLoggedIn())
+        if (!($customerId = $this->getCustomerId()))
             return array();
 
-        $collection = $this->getCollection()->addCustomerFilter();
+        $collection = $this->getCollection()->addCustomerFilter($customerId);
 
         $result = array();
 
@@ -74,7 +89,7 @@ class MP_Gateway_Model_Card extends Mage_Core_Model_Abstract
      *
      * @return string
      */
-    public function getCardIcon($ccType)
+    public function getCardIcon($ccType = null)
     {   
         if (is_null($ccType))
             $ccType = $this->getCardType();
@@ -85,9 +100,9 @@ class MP_Gateway_Model_Card extends Mage_Core_Model_Abstract
 
         $ccType = strtolower($ccType);
 
-        $path = sprintf('mp_gateway/images/cards_%s.png', $ccType);
+        $path = sprintf('mp_gateway/cards/cards_%s.png', $ccType);
 
-        return Mage::getDesign()->getSkinUrl($path);
+        return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . DS . $path;
     }
 
     /**
@@ -99,10 +114,9 @@ class MP_Gateway_Model_Card extends Mage_Core_Model_Abstract
      */
     public function addCard($request, $response)
     {
-        if (!Mage::getSingleton('customer/session')->isLoggedIn())
-            return $this;
-
-        $customerId = Mage::getSingleton('customer/session')->getCustomer()->getId();
+        if (!($customerId = $this->getCustomerId()))
+            return array();
+ 
         $this->setCustomerId($customerId);
 
         $cardDataArray = array(
@@ -164,4 +178,15 @@ class MP_Gateway_Model_Card extends Mage_Core_Model_Abstract
     {
         return $this->getCardByVaultId($vaultId) !== false;
     }
+
+    /**
+     * Set the current loaded card as default
+     *
+     * @return boolean
+     */
+    public function setAsDefault()
+    {
+        return $this->getResource()->setAsDefault($this);
+    }
+
 }

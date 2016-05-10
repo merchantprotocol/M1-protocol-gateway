@@ -18,6 +18,16 @@ class MP_Gateway_Block_Customer_Cards extends Mage_Core_Block_Template
     }
 
     /**
+     * Retrieve URL for setting a card as default
+     *
+     * @return string
+     */
+    public function getDefaultUrl($card)
+    {
+        return $this->getUrl('mp_gateway/cards/default', array('token' => $card->getCustomerVaultId()));
+    }
+
+    /**
      * Retrieve URL for card deletion
      *
      * @return string

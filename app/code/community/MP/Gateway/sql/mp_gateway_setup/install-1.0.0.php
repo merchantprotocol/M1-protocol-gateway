@@ -17,6 +17,7 @@ $installer->run("
         `customer_id` int(11) unsigned NOT NULL,
         `created_at` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
         `card_data` text,
+        `is_default` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
       PRIMARY KEY (`entity_id`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

@@ -47,6 +47,27 @@ class MP_Gateway_CardsController extends Mage_Core_Controller_Front_Action
     /**
      * Remove the card entry specified in token
      */
+    public function defaultAction()
+    {
+        $token = $this->getRequest()->getParam('token');
+        if (!$token || !($card = Mage::getModel('mp_gateway/card')->getCardByVaultId($token))) {
+            $this->_getSession()->addError('Please select a card entry to set as default');
+            return $this->_redirectReferer();
+        }
+
+        try {
+            $card->setAsDefault();
+            $this->_getSession()->addSuccess('The card has been successfully set as default');
+        } catch (Exception $e) {
+            $this->_getSession()->addError('Error in the request, please try again');
+        }
+
+        return $this->_redirectReferer();
+    }
+
+    /**
+     * Remove the card entry specified in token
+     */
     public function removeAction()
     {
         $token = $this->getRequest()->getParam('token');
@@ -56,7 +77,7 @@ class MP_Gateway_CardsController extends Mage_Core_Controller_Front_Action
         }
 
         try {
-            Mage::getModel('mp_gateway/payment')->vaultDel($token);
+            Mage::getModel('mp_gateway/vault')->deleteDetails($token);
             $this->_getSession()->addSuccess('The card has been successfully deleted');
         } catch (Exception $e) {
             $this->_getSession()->addError('Error in deletion, please try again');

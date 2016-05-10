@@ -6,28 +6,33 @@
  */
 
 ?>
-<?php $_code=$this->getMethodCode() ?>
+<?php $_code = $this->getMethodCode() ?>
 <?php $cards = $this->getSavedCards(); ?>
 <?php $canSaveCards = $this->canSaveCard() && count($cards); ?>
+<?php $hasDefault = false; ?>
 
 <div id="payment_form_<?php echo $_code ?>" style="display:none;">
 <?php if ($canSaveCards): ?>
     <ul class="mpgateway-cards-list" id="mpgateway-cards-list">
-    <?php foreach ($cards as $card): ?>
+    <?php foreach ($cards as $card): $isDefault = (bool)$card->getIsDefault(); ?>
         <li>
+            <?php $checked = $isDefault ? ' checked="checked"': ''; ?>
+            <?php if ($isDefault) $hasDefault = true; ?>
+
             <input type="radio" class="card-type" name="payment[cc_vault_id]"
-                id="<?php echo $_code ?>-card-<?php echo $card->customer_vault_id; ?>" value="<?php echo $card->getCustomerVaultId(); ?>" />
+                id="<?php echo $_code ?>-card-<?php echo $card->customer_vault_id; ?>" value="<?php echo $card->getCustomerVaultId(); ?>" <?php echo $checked; ?> />
             <label for="<?php echo $_code ?>-card-<?php echo $card->customer_vault_id; ?>">
                 <?php echo $card->render(); ?>
             </label>
         </li>
     <?php endforeach; ?>
     <li>
+        <?php $checked = !$hasDefault ? ' checked="checked"': ''; ?>
         <input type="radio" class="card-type" name="payment[cc_vault_id]"
-            id="<?php echo $_code ?>-card-new" checked="checked" value="" />
+            id="<?php echo $_code ?>-card-new" value="" <?php echo $checked; ?> />
         <label for="<?php echo $_code ?>-card-new">New Card</label>
 <?php endif; ?>
-    <ul class="form-list" id="payment_form_<?php echo $_code ?>_fields">
+    <ul class="form-list" id="payment_form_<?php echo $_code ?>_fields" <?php if ($hasDefault): ?> style="display:none;" <?php endif; ?>>
     <?php /*
         <li>
             <div class="input-box">

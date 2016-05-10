@@ -10,7 +10,7 @@
 <config>
     <modules>
         <MP_Gateway>
-            <version>1.0.0</version>
+            <version>1.2.0</version>
         </MP_Gateway>
     </modules>
     <global>

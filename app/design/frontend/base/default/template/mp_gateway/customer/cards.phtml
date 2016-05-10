@@ -25,6 +25,15 @@
         <?php foreach ($cards as $card): ?>
             <li>
                 <?php echo $card->render(); ?>
+
+                <?php if ((bool) $card->getIsDefault()): ?>
+                    <span class="default-state"><?php echo $this->__('Default Card'); ?></span>
+                <?php else: ?>
+                    <span class="default-link">
+                        <a href="<?php echo $this->getDefaultUrl($card); ?>" title="Set As Default"><?php echo $this->__('Set As Default'); ?></a>
+                    </span>
+                <?php endif; ?>
+                - 
                 <span class="remove-link">
                     <a href="<?php echo $this->getRemoveUrl($card); ?>" onclick="return confirm('Are you sure?')" title="Delete this card"><?php echo $this->__('Remove'); ?></a>
                 </span>

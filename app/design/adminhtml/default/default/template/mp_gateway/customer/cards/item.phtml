@@ -8,7 +8,7 @@
 ?>
 <?php $card = $this->getCard(); ?>
 
-<img class="card-icon" src="<?php echo $card->getCardIcon() ?>" alt="<?php echo $card->getCardType() ?>" /> <?php echo $card->getCcTypeName() ?> 
+<img class="card-icon" src="<?php echo $card->getCardIcon() ?>" alt="<?php echo $card->getCardType() ?>" style="width: 30px;"/> <?php echo $card->getCcTypeName() ?> 
 <span class="card-number"><?php echo sprintf('xxxx-xxxx-xxxx-%s', $card->getLast4()); ?>,</span>
 <span class="card-expiry"
 	<span class="label"><?php echo $this->__('Exp.'); ?></span> <?php echo sprintf('%s/%s', sprintf('%02d', $card->getExpmon()), $card->getExpyear()); ?>

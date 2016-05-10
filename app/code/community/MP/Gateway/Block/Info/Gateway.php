@@ -33,7 +33,7 @@ class MP_Gateway_Block_Info_Gateway extends Mage_Payment_Block_Info_Cc
         $transport = parent::_prepareSpecificInformation($transport);
         $data = array();
         if ($ccType = $this->getCcTypeName()) {
-            $data[Mage::helper('payment')->__('Credit Card Type')] = sprintf('<img class="card-icon" src="%s" alt="%s" /> %s', $card->getCardIcon($ccType), $ccType, $ccType);
+            $data[Mage::helper('payment')->__('Credit Card Type')] = sprintf('<img class="card-icon" src="%s" alt="%s" /> %s', $cardModel->getCardIcon($ccType), $ccType, $ccType);
         }
         if ($this->getInfo()->getCcLast4()) {
             $data[Mage::helper('payment')->__('Credit Card Number')] = sprintf('xxxx-%s', $this->getInfo()->getCcLast4());

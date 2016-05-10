@@ -11,3 +11,4 @@
 
 .customer-account .mpgateway-cards-list li { margin-bottom: 15px; }
 .mpgateway-cards-list .card-icon { width: 30px; float: left; margin-right: 15px; }
+.mpgateway-cards-list .default-state { font-style: italic; opacity: .6; }

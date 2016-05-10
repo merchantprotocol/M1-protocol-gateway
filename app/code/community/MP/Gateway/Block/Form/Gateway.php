@@ -30,7 +30,8 @@ class MP_Gateway_Block_Form_Gateway extends Mage_Payment_Block_Form_Cc
      */
     public function canSaveCard()
     {
-    	return Mage::getSingleton('customer/session')->isLoggedIn();
+    	return (bool)Mage::getStoreConfig('payment/mp_gateway/enable_savedcards') 
+            && (Mage::getSingleton('customer/session')->isLoggedIn() || Mage::app()->getStore()->isAdmin());
     }
 
     /**
@@ -40,6 +41,10 @@ class MP_Gateway_Block_Form_Gateway extends Mage_Payment_Block_Form_Cc
      */
     public function getSavedCards()
     {
+        $quote = Mage::getSingleton('checkout/session')->getQuote();
+        if (!(bool)Mage::getStoreConfig('payment/mp_gateway/enable_savedcards') || $quote->hasRecurringItems())
+            return;
+
         return Mage::getModel('mp_gateway/card')->getCustomerCollection();
     }
 }
