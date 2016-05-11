@@ -29,7 +29,7 @@ class MP_Gateway_Block_Info_Gateway extends Mage_Payment_Block_Info_Cc
                     ->setCcLast4($card->getLast4());
             }
         }
-        
+
         $transport = parent::_prepareSpecificInformation($transport);
         $data = array();
         if ($ccType = $this->getCcTypeName()) {
