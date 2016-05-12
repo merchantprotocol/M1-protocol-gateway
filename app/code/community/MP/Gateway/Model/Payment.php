@@ -69,6 +69,11 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
     	return Mage::getSingleton('mp_gateway/recurring');
     }
 
+    protected function allowZeroTotal()
+    {
+        return (bool)Mage::getStoreConfig('payment/mp_gateway/enable_zerototal');
+    }
+
     /**
      * Assign data to info model instance
      *
@@ -113,6 +118,27 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
         * calling parent validate function
         */
         parent::validate();
+    }
+
+
+    /**
+     * Check whether payment method is applicable to quote
+     * Purposed to allow use in controllers some logic that was implemented in blocks only before
+     *
+     * @param Mage_Sales_Model_Quote $quote
+     * @param int|null $checksBitMask
+     * @return bool
+     */
+    public function isApplicableToQuote($quote, $checksBitMask)
+    {
+        if ($checksBitMask & self::CHECK_ZERO_TOTAL) {
+            $total = $quote->getBaseSubtotal() + $quote->getShippingAddress()->getBaseShippingAmount();
+            if ($total < 0.0001 && $this->allowZeroTotal()) {
+                return true;
+            }
+        }
+
+        return parent::isApplicableToQuote($quote, $checksBitMask);
     }
 
     /**
@@ -229,6 +255,14 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
         }
 
     	$this->checkVault($payment, $request, $amount);
+
+        //If this is a 0 order, then don't send a request
+        if ($amount < 0.0001 && $this->allowZeroTotal()) {
+            if ($this->_saveCard)
+                    $this->getVault()->addDetails($payment, $amount);
+
+            return $this;
+        }
 
         $response = $this->_postRequest($request);
         $this->_processErrors($response);

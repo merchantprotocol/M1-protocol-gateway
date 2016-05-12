@@ -12,19 +12,9 @@ class MP_Gateway_Model_Card extends Mage_Core_Model_Abstract
         $this->_init('mp_gateway/card');
     }
 
-    protected function getCustomerId()
+    public function getCustomerId()
     {
-        if (Mage::app()->getStore()->isAdmin()) {
-            $customer = Mage::getSingleton('adminhtml/session_quote')->getCustomer();
-        }
-        else {
-            if (!Mage::getSingleton('customer/session')->isLoggedIn())
-                return false;
-
-            $customer = Mage::getSingleton('customer/session')->getCustomer();
-        }
-
-        return !is_null($customer) ? (int)$customer->getId() : false;
+        return Mage::helper('mp_gateway')->getCustomerId();
     }
 
     /**
@@ -32,7 +22,6 @@ class MP_Gateway_Model_Card extends Mage_Core_Model_Abstract
      *
      * @return MP_Gateway_Model_Resource_Card_Collection
      */
-
     public function getCustomerCollection()
     {
         if (!($customerId = $this->getCustomerId()))
@@ -90,7 +79,7 @@ class MP_Gateway_Model_Card extends Mage_Core_Model_Abstract
      * @return string
      */
     public function getCardIcon($ccType = null)
-    {   
+    {
         if (is_null($ccType))
             $ccType = $this->getCardType();
 
@@ -116,7 +105,7 @@ class MP_Gateway_Model_Card extends Mage_Core_Model_Abstract
     {
         if (!($customerId = $this->getCustomerId()))
             return array();
- 
+
         $this->setCustomerId($customerId);
 
         $cardDataArray = array(

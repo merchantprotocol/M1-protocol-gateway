@@ -18,6 +18,16 @@ class MP_Gateway_Block_Customer_Cards extends Mage_Core_Block_Template
     }
 
     /**
+     * Retrieve URL for switching card functionality
+     *
+     * @return string
+     */
+    public function getSwitchCards($value = 1)
+    {
+        return $this->getUrl('mp_gateway/cards/switch', array('value' => $value));
+    }
+
+    /**
      * Retrieve URL for setting a card as default
      *
      * @return string

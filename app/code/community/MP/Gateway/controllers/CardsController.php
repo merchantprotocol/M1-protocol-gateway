@@ -45,7 +45,28 @@ class MP_Gateway_CardsController extends Mage_Core_Controller_Front_Action
     }
 
     /**
-     * Remove the card entry specified in token
+     * Switch the main functionality as a customer level
+     */
+    public function switchAction()
+    {
+        $value = $this->getRequest()->getParam('value');
+        if (is_null($value))
+            $value = 1;
+
+        try {
+            $customer = Mage::helper('mp_gateway')->getCustomer();
+
+            $customer->setData('enable_savedcards', $value)->save();
+            $this->_getSession()->addSuccess(sprintf('The card functionality has been successfully %s', ($value) ? 'enabled' : 'disabled'));
+        } catch (Exception $e) {
+            $this->_getSession()->addError('Error in the request, please try again');
+        }
+
+        return $this->_redirectReferer();
+    }
+
+    /**
+     * Set the card entry specified in token as default
      */
     public function defaultAction()
     {

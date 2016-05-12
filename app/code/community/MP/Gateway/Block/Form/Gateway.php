@@ -30,8 +30,7 @@ class MP_Gateway_Block_Form_Gateway extends Mage_Payment_Block_Form_Cc
      */
     public function canSaveCard()
     {
-    	return (bool)Mage::getStoreConfig('payment/mp_gateway/enable_savedcards') 
-            && (Mage::getSingleton('customer/session')->isLoggedIn() || Mage::app()->getStore()->isAdmin());
+    	return Mage::helper('mp_gateway/customer')->canSaveCard();
     }
 
     /**

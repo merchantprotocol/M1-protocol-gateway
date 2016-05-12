@@ -100,7 +100,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </payment_action>
-                        <!--<enable_zerototal translate="label">
+                        <enable_zerototal translate="label">
                             <label>Enable Zero Total</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -108,7 +108,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
-                        </enable_zerototal>-->
+                        </enable_zerototal>
                         <currency translate="label">
                             <label>Accepted Currency</label>
                             <frontend_type>select</frontend_type>

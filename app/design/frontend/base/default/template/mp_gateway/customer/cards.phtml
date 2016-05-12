@@ -7,42 +7,62 @@
 
 ?>
 <?php $cards = $this->getSavedCards(); ?>
+<?php $helper = Mage::helper('mp_gateway'); ?>
+<?php $isEnabledSavedCards = $helper->isEnabledSavedCards(); ?>
 
-<div class="page-title">
+<div class="page-title title-buttons">
     <h1><?php echo $this->__('My Saved Cards') ?></h1>
+
+    <?php if (!$isEnabledSavedCards): ?>
+        <button type="button" title="<?php echo $this->__('Enable Saved Cards') ?>" class="button" onclick="window.location='<?php echo $this->getSwitchCards(1) ?>';">
+            <span><span><?php echo $this->__('Enable Saved Cards') ?></span></span>
+        </button>
+    <?php else: ?>
+        <button type="button" title="<?php echo $this->__('Disable Saved Cards') ?>" class="button" onclick="window.location='<?php echo $this->getSwitchCards(0) ?>';">
+            <span><span><?php echo $this->__('Disable Saved Cards') ?></span></span>
+        </button>
+    <?php endif; ?>
 </div>
 
 <?php echo $this->getMessagesBlock()->toHtml() ?>
 
-<p class="note-msg"><?php echo $this->__('Tick "Save this card for later use" during checkout to add new cards') ?></p>
+<?php if (!$isEnabledSavedCards): ?>
 
-<div class="fieldset">
+    <p class="note-msg"><?php echo $this->__('To start saving cards under your account, simply use the "Enable Saved Cards" button on this page') ?></p>
 
-    <?php if(count($cards)): ?>
+<?php else: ?>
 
-        <h2 class="legend"><?php echo $this->__('Cards') ?></h2>
-        <ul class="mpgateway-cards-list">
-        <?php foreach ($cards as $card): ?>
-            <li>
-                <?php echo $card->render(); ?>
+    <p class="note-msg"><?php echo $this->__('Tick "Save this card for later use" during checkout to add new cards') ?></p>
 
-                <?php if ((bool) $card->getIsDefault()): ?>
-                    <span class="default-state"><?php echo $this->__('Default Card'); ?></span>
-                <?php else: ?>
-                    <span class="default-link">
-                        <a href="<?php echo $this->getDefaultUrl($card); ?>" title="Set As Default"><?php echo $this->__('Set As Default'); ?></a>
+    <div class="fieldset">
+
+        <?php if(count($cards)): ?>
+
+            <h2 class="legend"><?php echo $this->__('Cards') ?></h2>
+            <ul class="mpgateway-cards-list">
+            <?php foreach ($cards as $card): ?>
+                <li>
+                    <?php echo $card->render(); ?>
+
+                    <?php if ((bool) $card->getIsDefault()): ?>
+                        <span class="default-state"><?php echo $this->__('Default Card'); ?></span>
+                    <?php else: ?>
+                        <span class="default-link">
+                            <a href="<?php echo $this->getDefaultUrl($card); ?>" title="Set As Default"><?php echo $this->__('Set As Default'); ?></a>
+                        </span>
+                    <?php endif; ?>
+                    -
+                    <span class="remove-link">
+                        <a href="<?php echo $this->getRemoveUrl($card); ?>" onclick="return confirm('Are you sure?')" title="Delete this card"><?php echo $this->__('Remove'); ?></a>
                     </span>
-                <?php endif; ?>
-                - 
-                <span class="remove-link">
-                    <a href="<?php echo $this->getRemoveUrl($card); ?>" onclick="return confirm('Are you sure?')" title="Delete this card"><?php echo $this->__('Remove'); ?></a>
-                </span>
-            </li>
-        <?php endforeach; ?>
-        </ul>
+                </li>
+            <?php endforeach; ?>
+            </ul>
 
-    <?php else: ?>
-        <p class="note-msg"><?php echo $this->__('There are no cards saved under your account at the moment.') ?></p>
-    <?php endif; ?>
+        <?php else: ?>
+            <p class="note-msg"><?php echo $this->__('There are no cards saved under your account at the moment.') ?></p>
+        <?php endif; ?>
 
-</div>
+    </div>
+
+<?php endif; ?>

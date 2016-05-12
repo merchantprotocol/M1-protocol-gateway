@@ -10,7 +10,7 @@
 <config>
     <modules>
         <MP_Gateway>
-            <version>1.2.0</version>
+            <version>1.3.0</version>
         </MP_Gateway>
     </modules>
     <global>
@@ -104,7 +104,8 @@
                 <sandbox_flag>0</sandbox_flag>
                 <allowspecific>0</allowspecific>
                 <currency>USD</currency>
-                <enable_savedcards>0</enable_savedcards>
+                <enable_savedcards>1</enable_savedcards>
+                <enable_zerototal>0</enable_zerototal>
             </mp_gateway>
         </payment>
     </default>
