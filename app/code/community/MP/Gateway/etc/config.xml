@@ -13,6 +13,13 @@
             <version>1.3.0</version>
         </MP_Gateway>
     </modules>
+    <phpunit>
+        <suite>
+            <modules>
+                <MP_Gateway />
+            </modules>
+        </suite>
+    </phpunit>       
     <global>
         <models>
             <mp_gateway>

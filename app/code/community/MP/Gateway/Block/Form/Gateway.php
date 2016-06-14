@@ -30,7 +30,7 @@ class MP_Gateway_Block_Form_Gateway extends Mage_Payment_Block_Form_Cc
      */
     public function canSaveCard()
     {
-    	return Mage::helper('mp_gateway/customer')->canSaveCard();
+    	return Mage::helper('mp_gateway')->canSaveCards();
     }
 
     /**

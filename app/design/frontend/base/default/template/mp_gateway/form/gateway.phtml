@@ -8,7 +8,7 @@
 ?>
 <?php $_code = $this->getMethodCode() ?>
 <?php $cards = $this->getSavedCards(); ?>
-<?php $canSaveCards = $this->canSaveCard() && count($cards); ?>
+<?php $canSaveCards = $this->canSaveCard(); ?>
 <?php $hasDefault = false; ?>
 
 <div id="payment_form_<?php echo $_code ?>" style="display:none;">

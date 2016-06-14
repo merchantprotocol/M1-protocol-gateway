@@ -32,13 +32,13 @@ class MP_Gateway_Helper_Data extends Mage_Core_Helper_Abstract
             $customer = Mage::getSingleton('customer/session')->getCustomer();
         }
 
-        return !is_null($customer) ? $customer : false;
+        return is_object($customer) && $customer->getId() ? $customer : false;
     }
 
     public function getCustomerId()
     {
         $customer = $this->getCustomer();
-        return !is_null($customer) ? (int)$customer->getId() : false;
+        return $customer ? (int)$customer->getId() : false;
     }
 
     /**
@@ -49,7 +49,7 @@ class MP_Gateway_Helper_Data extends Mage_Core_Helper_Abstract
     public function isEnabledSavedCards()
     {
         $customer = $this->getCustomer();
-        if (is_null($customer))
+        if (!$customer)
             return false;
 
         return (bool)$customer->getData('enable_savedcards');
