@@ -37,7 +37,13 @@
     
     <checkout_onepage_index>
     	<reference name="checkout.payment.methods" >
-            <block type="core/template" name="payment.method.quicksave" template="mp_gateway/form/quicksave.phtml"/>
+            <block type="mp_gateway/form_deposit" name="payment.method.deposit" output="toHtml" />
         </reference>
 	</checkout_onepage_index>
+	
+    <checkout_onepage_paymentmethod>
+    	<reference name="checkout.payment.methods" >
+            <block type="mp_gateway/form_deposit" name="payment.method.deposit" output="toHtml" />
+        </reference>
+    </checkout_onepage_paymentmethod>
 </layout>
