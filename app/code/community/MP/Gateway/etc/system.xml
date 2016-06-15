@@ -18,7 +18,7 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    <comment><![CDATA[Data is saved on Secure Level 1 PCI Compliant servers.]]></comment>
+                    <comment><![CDATA[<p style="font-size:1.5em"><a target="_blank" style="color:#06a452!important" href="https://merchantprotocol.com/merchant-accounts-and-merchant-services/">Merchant Protocol</a> provides everything that you need to accept credit cards online. If you don't already have an account, signup here.</p>]]></comment>
                     <fields>
                         <active translate="label">
                             <label>Enabled</label>
@@ -84,7 +84,7 @@
                             <comment><![CDATA[Data is saved on Secure Level 1 PCI Compliant servers.]]></comment>
                         </enable_savedcards>
                         <always_require_saved_card translate="label">
-                            <label>Allow Saved Cards</label>
+                            <label>Always Require a Saved Card</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>35</sort_order>

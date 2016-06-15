@@ -3,7 +3,6 @@
 /**
  * @author Fran Mayers (https://merchantprotocol.com)
  * @copyright  Copyright (c) 2016 Merchant Protocol
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 -->
 <layout version="0.1.0">
@@ -35,5 +34,10 @@
             <block type="mp_gateway/customer_cards" name="mp_gateway_saved_cards" template="mp_gateway/customer/cards.phtml" />
         </reference>
     </mp_gateway_cards_index>
-
+    
+    <checkout_onepage_index>
+    	<reference name="checkout.payment.methods" >
+            <block type="core/template" name="payment.method.quicksave" template="mp_gateway/form/quicksave.phtml"/>
+        </reference>
+	</checkout_onepage_index>
 </layout>
