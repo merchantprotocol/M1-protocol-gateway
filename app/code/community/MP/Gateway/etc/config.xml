@@ -114,6 +114,9 @@
                 <enable_savedcards>1</enable_savedcards>
                 <enable_zerototal>0</enable_zerototal>
             </mp_gateway>
+            <mp_gateway_deposit>
+            	<title>A Purchase Card On File Is Required</title>
+            </mp_gateway_deposit>
         </payment>
     </default>
 </config>
