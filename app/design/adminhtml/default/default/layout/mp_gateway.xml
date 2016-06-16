@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Merchant Protocol (https://merchantprotocol.com)
+ * @copyright  Copyright (c) 2016 Merchant Protocol
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+-->
+
+<layout>
+    <adminhtml_customer_edit>
+    	<reference name="head">
+    		<action method="addCss"><name>mp_gateway/css/style.css</name></action>
+    	</reference>
+        <reference name="customer_edit_tabs">
+            <block type="mp_gateway/adminhtml_customer_edit_tab_card" name="customer_edit_tab_card">
+	            <action method="initForm" />
+            </block>
+            <action method="addTab"><name>customer_edit_tab_card</name><block>mp_gateway/adminhtml_customer_edit_tab_card</block></action>
+        </reference>
+    </adminhtml_customer_edit>
+</layout>

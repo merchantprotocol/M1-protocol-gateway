@@ -54,6 +54,16 @@
     </global>
 
     <adminhtml>
+    	<events>
+            <adminhtml_customer_save_after>
+                <observers>
+                    <mp_gateway_adminhtml_customer_save_after>
+                        <class>mp_gateway/adminhtml_observer</class>
+                        <method>adminhtmlCustomerSaveAfter</method>
+                    </mp_gateway_adminhtml_customer_save_after>
+                </observers>
+            </adminhtml_customer_save_after>
+        </events>    
         <acl>
             <resources>
                 <admin>
@@ -73,6 +83,14 @@
                 </admin>
             </resources>
         </acl>
+        <layout>
+            <updates>
+                <mp_gateway module="MP_Gateway">
+                    <file>mp_gateway.xml</file>
+                </mp_gateway>
+            </updates>
+        </layout>
+        
     </adminhtml>
 
     <frontend>

@@ -1,0 +1,20 @@
+@CHARSET "UTF-8";
+/**
+ * @author Merchant Protocol (https://merchantprotocol.com)
+ * @copyright  Copyright (c) 2016 Merchant Protocol
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+ 
+.card-list                        { width:28em; padding-right:22px; }
+.card-list card                   { width:100%; overflow:hidden; }
+.card-list .btn-edit-card,
+.card-list .btn-remove-card       { position:absolute; top:8px; }
+.card-list .btn-edit-card         { right:8px; }
+.card-list .btn-remove-card       { right:27px; }
+.card-list li                     { position:relative; padding:12px 14px; cursor:pointer; border-top:1px solid #e6e6e6; background:url(images/card_list_li.gif) repeat; }
+.card-list li.on                  { background:#e7efef; }
+.card-list li.over                { background-color:#fcf5dd; }
+.card-list li table               { width:100%; }
+.delete-card                      { float:right; margin:0 0 10px 10px; }
+.card-type .card-type-line        { display:block; margin:2px 0; }
+.card-type .card-type-line input  { margin-right:3px; }

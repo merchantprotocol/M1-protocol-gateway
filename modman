@@ -5,3 +5,4 @@ app/design/frontend/base/default/layout/mp_gateway.xml		app/design/frontend/base
 app/design/frontend/base/default/template/mp_gateway		app/design/frontend/base/default/template/mp_gateway
 app/etc/modules/MP_Gateway.xml								app/etc/modules/MP_Gateway.xml
 media/mp_gateway											media/mp_gateway
+skin/adminhtml/default/default/mp_gateway					skin/adminhtml/default/default/mp_gateway

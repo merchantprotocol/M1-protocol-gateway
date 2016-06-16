@@ -57,6 +57,33 @@ class MP_Gateway_Model_Card extends Mage_Core_Model_Abstract
             ->setTemplate('mp_gateway/customer/cards/item.phtml')
             ->toHtml();
     }
+    
+    /**
+     * Get card data text or html
+     * @param string $type html or default text
+     */
+    public function format($type)
+    {
+    	$cardDataEnc = $this->getCardData();
+    	$cardDataSer = Mage::getModel('core/encryption')->decrypt($cardDataEnc);
+    	$cardDataArray = unserialize($cardDataSer);
+    	$cardType = $cardDataArray['card_type'];
+    	$cardTypeLabel = Mage::getConfig()->getNode('global/payment/cc/types/'.$cardType.'/name');
+    	$last4 = 'XXXX-XXXX-XXXX-'.$cardDataArray['last4'];
+    	$expmon = $cardDataArray['expmon'];
+    	$expyear = $cardDataArray['expyear'];
+    	$output = <<<EOT
+{$cardTypeLabel}
+{$last4}
+{$expmon}/$expyear
+EOT;
+    	if ($type == 'html'){
+    		$output = nl2br($output);
+    	} 
+    	
+    	return $output;
+    	
+    }
 
     /**
      * Retrieve credit card type name
