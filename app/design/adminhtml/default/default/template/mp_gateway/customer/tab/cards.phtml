@@ -70,7 +70,7 @@
 						<?php if ($this->isReadonly()):?> disabled="disabled"
 						<?php endif;?> type="radio" value="<?php echo $_templatePrefix ?>"
 						id="card_item<?php echo $_templatePrefix ?>"
-						name="account[default_billing]"
+						name="account[default_card]"
 						title="<?php echo Mage::helper('core')->quoteEscape(Mage::helper('mp_gateway')->__('Set as Default Card')) ?>" />
 						&nbsp;<label for="card_item<?php echo $_templatePrefix ?>"><?php echo Mage::helper('customer')->__('Default Card') ?></label>
 					</span>

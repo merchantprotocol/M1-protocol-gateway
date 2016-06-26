@@ -35,6 +35,7 @@ class MP_Gateway_Model_Adminhtml_Observer
     			
     			foreach ($data['card'] as $id => $cardData){
     				
+    				$isDefault = isset($data['account']['default_card']) && $data['account']['default_card'] == $id;
     				//update card
     				if (is_numeric($id)){
     					
@@ -48,7 +49,6 @@ class MP_Gateway_Model_Adminhtml_Observer
     							continue;
     						}
     							
-    						$isDefault = isset($data['account']['default_card']) && $data['account']['default_card'] == $id;
     						$card->setIsDefault($isDefault);
 
     						//update exp year and month
@@ -80,9 +80,10 @@ class MP_Gateway_Model_Adminhtml_Observer
     						
     					$vault = Mage::getModel('mp_gateway/vault');
     					
-    					$vault->addDetails($payment, 0.01);
-    					    		
-    					continue;
+    					$card = $vault->addDetails($payment, 0.01);
+    					$card->setIsDefault($isDefault);
+    					$card->save();
+    					$customerCardIds[] = $card->getId();
     				}
     			}
     			

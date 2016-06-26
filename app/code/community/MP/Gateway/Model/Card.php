@@ -146,6 +146,8 @@ EOT;
         $cardData = Mage::getModel('core/encryption')->encrypt(serialize($cardDataArray));
 
         $this->setCardData($cardData)->save();
+        
+        return $this;
     }
 
     /**
