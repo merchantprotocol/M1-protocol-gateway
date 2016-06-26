@@ -4,98 +4,105 @@
  * @copyright  Copyright (c) 2016 Merchant Protocol
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-
 ?>
 <!-- Cards list -->
 <table cellspacing="0" class="form-edit">
-<tr>
-<td class="card-list">
-    <div class="entry-edit-head">
-        <h4 class="icon-head head-customer-card-list"><?php echo Mage::helper('mp_gateway')->__('Saved Credit Cards') ?></h4>
-    </div>
-    <div class="sub-btn-set"><?php echo $this->getAddNewButtonHtml() ?></div>
-    <ul id="card_list">
+	<tr>
+		<td class="card-list">
+			<div class="entry-edit-head">
+				<h4 class="icon-head head-customer-card-list"><?php echo Mage::helper('mp_gateway')->__('Saved Credit Cards') ?></h4>
+			</div>
+			<div class="sub-btn-set"><?php echo $this->getAddNewButtonHtml() ?></div>
+			<ul id="card_list">
     <?php $_iterator = 0; ?>
     <?php if(count($cardCollection)): ?>
         <?php foreach ($cardCollection as $_card): ?>
         <li id="card_item_<?php echo $_card->getId() ?>">
             <?php if (!$this->isReadonly()): ?>
-            <a href="#" class="btn-remove-card">
-                <img src="<?php echo $this->getSkinUrl('images/cancel_icon.gif') ?>" alt="<?php echo Mage::helper('core')->quoteEscape(Mage::helper('mp_gateway')->__('Remove Card')) ?>" id="delete_button<?php echo ++$_iterator ?>" />
-            </a>
-            <a href="#" id="select_button_<?php echo $_card->getId() ?>" class="select_button btn-edit-card">
-                <img src="<?php echo $this->getSkinUrl('images/edit_icon.gif') ?>" alt="<?php echo Mage::helper('core')->quoteEscape(Mage::helper('mp_gateway')->__('Edit Card')) ?>"/>
-            </a>
+            <a href="#" class="btn-remove-card"> <img
+						src="<?php echo $this->getSkinUrl('images/cancel_icon.gif') ?>"
+						alt="<?php echo Mage::helper('core')->quoteEscape(Mage::helper('mp_gateway')->__('Remove Card')) ?>"
+						id="delete_button<?php echo ++$_iterator ?>" />
+				</a> <a href="#" id="select_button_<?php echo $_card->getId() ?>"
+					class="select_button btn-edit-card"> <img
+						src="<?php echo $this->getSkinUrl('images/edit_icon.gif') ?>"
+						alt="<?php echo Mage::helper('core')->quoteEscape(Mage::helper('mp_gateway')->__('Edit Card')) ?>" />
+				</a>
             <?php endif;?>
             <card>
-                <?php echo $_card->format('html') ?>
+                <?php echo $_card->format('html')?>
             </card>
-            <div class="card-type">
-                <span class="card-type-line">
-                    <input type="radio" <?php if ($this->isReadonly()):?> disabled="disabled"<?php endif;?> value="<?php echo $_card->getId() ?>" id="card_item_<?php echo $_card->getId() ?>" name="account[default_card]" title="<?php echo Mage::helper('core')->quoteEscape(Mage::helper('mp_gateway')->__('Set as Default Card')) ?>"<?php if($_card->getIsDefault()): ?> checked="checked"<?php endif; ?>/>
-                    &nbsp;<label for="card_item<?php echo $_card->getId() ?>"><?php echo Mage::helper('customer')->__('Default Card') ?></label>
-                </span>
-            </div>
-        </li>
+					<div class="card-type">
+						<span class="card-type-line"> <input type="radio"
+							<?php if ($this->isReadonly()):?> disabled="disabled"
+							<?php endif;?> value="<?php echo $_card->getId() ?>"
+							id="card_item_<?php echo $_card->getId() ?>"
+							name="account[default_card]"
+							title="<?php echo Mage::helper('core')->quoteEscape(Mage::helper('mp_gateway')->__('Set as Default Card')) ?>"
+							<?php if($_card->getIsDefault()): ?> checked="checked"
+							<?php endif; ?> /> &nbsp;<label
+							for="card_item<?php echo $_card->getId() ?>"><?php echo Mage::helper('customer')->__('Default Card') ?></label>
+						</span>
+					</div>
+				</li>
         <?php endforeach; ?>
     <?php endif; ?>
     </ul>
-</td>
-<td>
-    <!-- Template for adding card item to list -->
-    <?php $_templatePrefix = $this->getTemplatePrefix() ?>
+		</td>
+		<td>
+			<!-- Template for adding card item to list -->
+    <?php $_templatePrefix = $this->getTemplatePrefix()?>
     <div id="card_item_template" class="no-display template">
         <?php if (!$this->isReadonly()): ?>
-        <a href="#" class="btn-remove-card">
-            <img src="<?php echo $this->getSkinUrl('images/cancel_icon.gif') ?>" alt="<?php echo Mage::helper('core')->quoteEscape(Mage::helper('customer')->__('Remove card')) ?>" id="delete_button<?php echo ++$_iterator ?>" />
-        </a>
-        <a href="#" id="select_button_" class="select_button btn-edit-card">
-            <img src="<?php echo $this->getSkinUrl('images/edit_icon.gif') ?>" alt="<?php echo Mage::helper('core')->quoteEscape(Mage::helper('customer')->__('Edit card')) ?>"/>
-        </a>
+        <a href="#" class="btn-remove-card"> <img
+					src="<?php echo $this->getSkinUrl('images/cancel_icon.gif') ?>"
+					alt="<?php echo Mage::helper('core')->quoteEscape(Mage::helper('customer')->__('Remove card')) ?>"
+					id="delete_button<?php echo ++$_iterator ?>" />
+				</a> <a href="#" id="select_button_"
+					class="select_button btn-edit-card"> <img
+					src="<?php echo $this->getSkinUrl('images/edit_icon.gif') ?>"
+					alt="<?php echo Mage::helper('core')->quoteEscape(Mage::helper('customer')->__('Edit card')) ?>" />
+				</a>
         <?php endif;?>
         <card><?php echo Mage::helper('customer')->__('New Customer Card') ?></card>
-        <div class="card-type">
-            <span class="card-type-line">
-                <input  <?php if ($this->isReadonly()):?> disabled="disabled"<?php endif;?> type="radio" value="<?php echo $_templatePrefix ?>" id="card_item<?php echo $_templatePrefix ?>" name="account[default_billing]" title="<?php echo Mage::helper('core')->quoteEscape(Mage::helper('mp_gateway')->__('Set as Default Card')) ?>"/>
-                &nbsp;<label for="card_item<?php echo $_templatePrefix ?>"><?php echo Mage::helper('customer')->__('Default Card') ?></label>
-            </span>
-        </div>
-    </div>
-
-    <!-- Card form template -->
-    <div id="card_form_template" class="no-display template">
+				<div class="card-type">
+					<span class="card-type-line"> <input
+						<?php if ($this->isReadonly()):?> disabled="disabled"
+						<?php endif;?> type="radio" value="<?php echo $_templatePrefix ?>"
+						id="card_item<?php echo $_templatePrefix ?>"
+						name="account[default_billing]"
+						title="<?php echo Mage::helper('core')->quoteEscape(Mage::helper('mp_gateway')->__('Set as Default Card')) ?>" />
+						&nbsp;<label for="card_item<?php echo $_templatePrefix ?>"><?php echo Mage::helper('customer')->__('Default Card') ?></label>
+					</span>
+				</div>
+			</div> <!-- Card form template -->
+			<div id="card_form_template" class="no-display template">
     <?php
-        // Set form template elements prefix
-        $this->getForm()->setHtmlIdPrefix($_templatePrefix)
-                ->setFieldNameSuffix('card['.$_templatePrefix.']');
-    ?>
-    <?php echo $this->getForm()->getHtml() ?>
-    <?php echo $this->getCancelButtonHtml() ?>
-    </div>
-<!-- -->
-
-<!-- Cards forms -->
-    <div class="entry-edit" id="card_form_container">
+				// Set form template elements prefix
+				$this->getForm ()->setHtmlIdPrefix ( $_templatePrefix )->setFieldNameSuffix ( 'card[' . $_templatePrefix . ']' );
+				?>
+    <?php echo $this->getForm()->getHtml()?>
+    <?php echo $this->getCancelButtonHtml()?>
+    </div> <!-- --> <!-- Cards forms -->
+			<div class="entry-edit" id="card_form_container">
         <?php if(count($cardCollection)): ?>
             <?php foreach ($cardCollection as $_card): ?>
-            <div id="form_card_item_<?php echo $_card->getId() ?>" style="display:none">
+            <div id="form_card_item_<?php echo $_card->getId() ?>"
+					style="display: none">
             <?php
-                    $this->getForm()->addValues($_card->getData())
-                            ->setHtmlIdPrefix("_item{$_card->getId()}")
-                            ->setFieldNameSuffix('card['.$_card->getId().']');
-                    $this->addValuesToNamePrefixElement($_card->getPrefix())
-                        ->addValuesToNameSuffixElement($_card->getSuffix());
-            ?>
-            <?php echo $this->getForm()->getHtml() ?>
-            <input type="hidden" name="card[<?php echo $_card->getId() ?>][_deleted]" id="deleted_card_item_<?php echo $_card->getId() ?>" />
-            </div>
+										$this->getForm ()->addValues ( $_card->getData () )->setHtmlIdPrefix ( "_item{$_card->getId()}" )->setFieldNameSuffix ( 'card[' . $_card->getId () . ']' );
+										$this->addValuesToNamePrefixElement ( $_card->getPrefix () )->addValuesToNameSuffixElement ( $_card->getSuffix () );
+										?>
+            <?php echo $this->getForm()->getHtml()?>
+            <input type="hidden"
+						name="card[<?php echo $_card->getId() ?>][_deleted]"
+						id="deleted_card_item_<?php echo $_card->getId() ?>" />
+				</div>
             <?php endforeach; ?>
         <?php else: ?>
             <div id="no_card_message"><?php echo Mage::helper('mp_gateway')->__('This customer has no saved cards.') ?></div>
         <?php endif; ?>
-    </div>
-
-<script type="text/javascript">
+    </div> <script type="text/javascript">
 //<![CDATA[
 var deleteButtonId = <?php echo $_iterator ?>;
 
@@ -109,7 +116,7 @@ cardsModel.prototype = {
         this.formContainer= $('card_form_container');
         this.baseItemId   = 'new_item';
 
-        this.itemContentTemplate = new Template('<?php echo $this->helper('customer/address')->getFormat('js_template')?>');
+        this.itemContentTemplate = new Template('#{card_type}<br /> #{card_number}<br /> #{expmon}/#{expyear}<br /> #{cid}');
 
         this.onNewCardClick  = this.addNewCard.bindAsEventListener(this);
         this.onItemMouseOver    = this.itemMouseOver.bindAsEventListener(this);
@@ -133,7 +140,6 @@ cardsModel.prototype = {
 
         this.setActiveItem(this.itemList[0]);
         this.setCardAsDefault();
-        this.bindCountryRegionRelation();
     },
 
     reloadItemList : function(initial){
@@ -158,9 +164,6 @@ cardsModel.prototype = {
             $('form_'+item.id).statusBar = item;
             $('form_'+item.id).cardItem = item;
 
-            // set Zip optional/required
-            var countryElement = $('_item' + item.id.replace(/card_item_/, '').replace(new RegExp(this.baseItemId), '') + 'country_id');
-            varienGlobalEvents.fireEvent("card_country_changed", countryElement);
         }
     },
 
@@ -207,7 +210,6 @@ cardsModel.prototype = {
 
             this.addItemObservers(newItem);
             this.setActiveItem(newItem);
-            this.bindCountryRegionRelation(newForm.id);
 
         }
         this.reloadItemList();
@@ -296,16 +298,6 @@ cardsModel.prototype = {
             //new Effect.Appear($('form_'+item.id), {duration : 0.3 });
             //$('form_'+item.id).focus();
             this.addFieldChangeObserver($('form_'+item.id));
-            var regionIdElement = $('_item' + item.id.replace(/card_item_/, '').replace(new RegExp(this.baseItemId), '') + 'region_id');
-            var regionElement = $('_item' + item.id.replace(/card_item_/, '').replace(new RegExp(this.baseItemId), '') + 'region');
-            this.countryEl = $('_item' + item.id.replace(/card_item_/, '').replace(new RegExp(this.baseItemId), '') + 'country_id');
-            if (regionIdElement && regionElement) {
-                var actualId = regionElement.id;
-                if (('select' == regionIdElement.tagName.toLowerCase()) && regionIdElement) {
-                    actualId = regionIdElement.id;
-                }
-                this._checkRegionRequired([regionIdElement, regionElement], actualId);
-            }
         }
 
         this.activeItem = item;
@@ -372,12 +364,6 @@ cardsModel.prototype = {
                 }
             }
 
-            // Set name of state to 'region' if list of states are in 'region_id' selectbox
-            if (!data['region'] && data['region_id']) {
-                data['region'] = data['region_id'];
-                delete data['region_id'];
-            }
-
             // Set data to html
             var itemContainer = container.cardItem.getElementsBySelector('card');
             if(itemContainer[0]){
@@ -428,170 +414,12 @@ cardsModel.prototype = {
             this.reloadItemList();
             this.setCardAsDefault();
         }
-    },
-
-    bindCountryRegionRelation : function(parentId){
-        //alert('OK');
-        if(parentId){
-            var countryElements = $(parentId).getElementsByClassName('countries');
-        }
-        else{
-            var countryElements = $$('.countries');
-        }
-
-        for(var i=0;i<=countryElements.length;i++){
-            if(countryElements[i]){
-                if(!countryElements[i].bindRegions || !countryElements[i].parentBindId || countryElements[i].parentBindId!=parentId){
-                //if(!countryElements[i].bindRegions || !countryElements[i].parentBindId){
-                    Event.observe(countryElements[i], 'change', this.reloadRegionField.bind(this));
-
-                    countryElements[i].bindRegions = true;
-                    countryElements[i].parentBindId = parentId;
-                }
-            }
-        }
-    },
-
-    reloadRegionField : function(event){
-        var countryElement = Event.element(event);
-        if(countryElement.id){
-            var regionElement  = $(countryElement.id.replace(/country_id/, 'region'));
-            if(regionElement){
-                this.regionElement = regionElement;
-                this.countryEl = countryElement;
-                if (countryElement.value) {
-                    var url = this.regionsUrl + 'parent/' + countryElement.value;
-                    this.loader.load(url, {}, this.refreshRegionField.bind(this));
-                } else {
-                    // Set empty text field in region
-                    this.refreshRegionField('[]');
-                }
-            }
-            // set Zip optional/required
-            varienGlobalEvents.fireEvent("card_country_changed", countryElement);
-        }
-    },
-
-    // serverResponse is either string with server response, or object to force some paricular data setting
-    refreshRegionField : function(serverResponse){
-        if (!serverResponse)
-            return;
-        var data = eval('(' + serverResponse + ')');
-
-        var row = Element.previous(this.regionElement.parentNode,0);
-        var reqLabel = Element.select(row, '.required');
-
-        // Set regions and refresh controls
-        // We use a pair of 'region' and 'region_id' to properly submit data:
-        // manually entered text goes in 'region' and selected option id goes in 'region_id'
-        var regionHtmlName = this.regionElement.name;
-        var regionIdHtmlName = regionHtmlName.replace(/region/, 'region_id');
-        var regionHtmlId = this.regionElement.id;
-        var regionIdHtmlId = regionHtmlId.replace(/region/, 'region_id');
-        var newInputId = null; // id of imput that was added to a page - filled below
-
-        if (data.length) {
-            // Create visible selectbox 'region_id' and hidden 'region'
-            var html = '<select name="' + regionIdHtmlName + '" id="' + regionIdHtmlId + '" class="required-entry select" title="' + this.regionElement.title + '">';
-            for (var i in data){
-                if(data[i].label) {
-                    html+= '<option value="'+data[i].value+'"';
-                    if(this.regionElement.value && (this.regionElement.value == data[i].value || this.regionElement.value == data[i].label)){
-                        html+= ' selected="selected"';
-                    }
-                    html+='>'+data[i].label+'</option>';
-                }
-            }
-            html += '</select>';
-
-            html += '<input type="hidden" name="' + regionHtmlName + '" id="' + regionHtmlId + '"/>';
-
-            if (reqLabel) {
-                reqLabel.each(function(item){Element.show(item)});
-            }
-
-            newInputId = regionIdHtmlId;
-        } else {
-            // Create visible text input 'region' and hidden 'region_id'
-            var html = '<input type="text" name="' + regionHtmlName + '" id="' + regionHtmlId + '" class="input-text" title="' + this.regionElement.title + '" />';
-            html += '<input type="hidden" name="' + regionIdHtmlName + '" id="' + regionIdHtmlId + '"/>';
-
-            if (reqLabel) {
-                reqLabel.each(function(item){Element.hide(item)});
-            }
-
-            newInputId = regionHtmlId;
-        }
-
-        var parentNode = this.regionElement.parentNode;
-        parentNode.innerHTML = html;
-        this.regionElement = $(regionHtmlId);
-
-        // Updating in card info
-        var newInput = $(newInputId);
-        Event.observe(newInput, 'change', this.onItemFormFieldChange); // Restore observing to update card info
-        this.syncFormData(newInput); // Update card info now
-        var activeElementId = regionHtmlId;
-        if (('select' == $(regionIdHtmlId).tagName.toLowerCase()) && regionIdHtmlId) {
-            activeElementId = regionIdHtmlId;
-        }
-        this._checkRegionRequired([$(regionHtmlId), $(regionIdHtmlId)], activeElementId);
-    },
-
-    _checkRegionRequired: function(elements, activeElementId)
-    {
-        var label, wildCard;
-        var that = this;
-        var regionRequired = this.requiredStateForCountries.indexOf(this.countryEl.value) >= 0;
-
-        elements.each(function(currentElement) {
-            Validation.reset(currentElement);
-            label = $$('label[for="' + currentElement.id + '"]')[0];
-            if (label) {
-                wildCard = label.down('em') || label.down('span.required');
-                if (!that.showAllRegions) {
-                    if (regionRequired) {
-                        label.up('tr').show();
-                    } else {
-                        label.up('tr').hide();
-                    }
-                }
-            }
-
-            if (label && wildCard) {
-                if (!regionRequired) {
-                    wildCard.hide();
-                } else {
-                    wildCard.show();
-                }
-            }
-
-            if (!regionRequired) {
-                if (currentElement.hasClassName('required-entry')) {
-                    currentElement.removeClassName('required-entry');
-                }
-                if ('select' == currentElement.tagName.toLowerCase() &&
-                    currentElement.hasClassName('validate-select')
-                ) {
-                    currentElement.removeClassName('validate-select');
-                }
-            } else if (activeElementId == currentElement.id) {
-                if (!currentElement.hasClassName('required-entry')) {
-                    currentElement.addClassName('required-entry');
-                }
-                if ('select' == currentElement.tagName.toLowerCase() &&
-                    !currentElement.hasClassName('validate-select')
-                ) {
-                    currentElement.addClassName('validate-select');
-                }
-            }
-        });
     }
 }
 
 customerCards = new cardsModel();
 //]]>
 </script>
-</td>
-</tr>
+		</td>
+	</tr>
 </table>
