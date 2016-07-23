@@ -1,46 +1,19 @@
-## General          
-!.gitignore
-!.editorconfig
-!readme.md
-~*
-*.sublime-project
-*.sublime-workspace
-*.komodoproject
-*.log
-*.sqlite
-error_log
+# Various IDE &#038; OS files that should never be committed
+.DS_Store
+*.swp
+*.lock
+__MACOSX
+.idea
+/nbproject/*
+.project
 .buildpath
-/.project
-/.settings
-phpunit*.phar
-/.modgit/
-/.modman/
-
-## WordPress Ignores
-/wp-content/plugins/hello.php
-/wp-content/themes/twenty*/
-wp-config.php
+.thumbs
+Thumbs.db
+build.properties
+.project
+.settings
+.buildpath
 
 
-## Magento Ignores
-.htaccess.sample
-app/etc/local.xml
-/var/cache/*
-/var/session/*
-/var/log/*
-/var/report/*
-/var/locks/*
-/var/importexport/*
-/media/catalog/product/cache/*
-index.php.sample
-php.ini.sample
-LICENSE_AFL.txt
-LICENSE.html
-LICENSE.txt
-LICENSE_EE*
-RELEASE_NOTES.txt
-/downloader/.cache
-/downloader/cache.cfg
-/downloader/connect.cfg
-/media/cache/
-/var/moogento/pickpack/qrcode/
+# Generated md html
+*.md.html
