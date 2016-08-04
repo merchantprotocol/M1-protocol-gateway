@@ -1,0 +1,63 @@
+2016-06-17T00:02:34+00:00 ERR (3): 
+exception 'Zend_Mail_Transport_Exception' with message 'Unable to send mail. ' in /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/lib/Zend/Mail/Transport/Sendmail.php:137
+Stack trace:
+#0 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/lib/Zend/Mail/Transport/Abstract.php(348): Zend_Mail_Transport_Sendmail->_sendMail()
+#1 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/lib/Zend/Mail.php(1194): Zend_Mail_Transport_Abstract->send(Object(Zend_Mail))
+#2 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Core/Model/Email/Template.php(451): Zend_Mail->send()
+#3 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/community/MP/Debug/Model/Core/Email/Template.php(28): Mage_Core_Model_Email_Template->send(Array, Array, Array)
+#4 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/community/MP/Debug/Model/Core/Email/Template.php(45): MP_Debug_Model_Core_Email_Template->parentSend(Array, Array, Array)
+#5 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Core/Model/Email/Template.php(508): MP_Debug_Model_Core_Email_Template->send(Array, Array, Array)
+#6 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Core/Model/Email/Template/Mailer.php(84): Mage_Core_Model_Email_Template->sendTransactional('customer_create...', 'general', Array, Array, Array, '1')
+#7 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Customer/Model/Customer.php(680): Mage_Core_Model_Email_Template_Mailer->send()
+#8 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Customer/Model/Customer.php(607): Mage_Customer_Model_Customer->_sendEmailTemplate('customer/create...', 'customer/create...', Array, '1')
+#9 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Customer/controllers/AccountController.php(575): Mage_Customer_Model_Customer->sendNewAccountEmail('registered', '', '1')
+#10 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Customer/controllers/AccountController.php(350): Mage_Customer_AccountController->_welcomeCustomer(Object(Mage_Customer_Model_Customer))
+#11 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Customer/controllers/AccountController.php(303): Mage_Customer_AccountController->_successProcessRegistration(Object(Mage_Customer_Model_Customer))
+#12 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Core/Controller/Varien/Action.php(418): Mage_Customer_AccountController->createPostAction()
+#13 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Core/Controller/Varien/Router/Standard.php(254): Mage_Core_Controller_Varien_Action->dispatch('createpost')
+#14 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Core/Controller/Varien/Front.php(172): Mage_Core_Controller_Varien_Router_Standard->match(Object(Mage_Core_Controller_Request_Http))
+#15 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Core/Model/App.php(365): Mage_Core_Controller_Varien_Front->dispatch()
+#16 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/Mage.php(684): Mage_Core_Model_App->run(Array)
+#17 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/index.php(83): Mage::run('', 'store')
+#18 {main}
+2016-06-17T04:22:40+00:00 ERR (3): 
+exception 'Mage_Core_Exception' with message 'DECLINE' in /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/Mage.php:595
+Stack trace:
+#0 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/community/MP/Gateway/Model/Payment.php(226): Mage::throwException('DECLINE')
+#1 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/community/MP/Gateway/Model/Payment.php(188): MP_Gateway_Model_Payment->_processErrors(Object(Varien_Object))
+#2 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Sales/Model/Order/Payment.php(1089): MP_Gateway_Model_Payment->authorize(Object(Mage_Sales_Model_Order_Payment), 222.84)
+#3 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Sales/Model/Order/Payment.php(342): Mage_Sales_Model_Order_Payment->_authorize(true, 222.84)
+#4 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Sales/Model/Order.php(896): Mage_Sales_Model_Order_Payment->place()
+#5 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Sales/Model/Order.php(1114): Mage_Sales_Model_Order->_placePayment()
+#6 [internal function]: Mage_Sales_Model_Order->place()
+#7 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Core/Model/Resource/Transaction.php(105): call_user_func(Array)
+#8 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Core/Model/Resource/Transaction.php(159): Mage_Core_Model_Resource_Transaction->_runCallbacks()
+#9 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Sales/Model/Service/Quote.php(189): Mage_Core_Model_Resource_Transaction->save()
+#10 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Sales/Model/Service/Quote.php(249): Mage_Sales_Model_Service_Quote->submitOrder()
+#11 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Checkout/Model/Type/Onepage.php(812): Mage_Sales_Model_Service_Quote->submitAll()
+#12 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Checkout/controllers/OnepageController.php(579): Mage_Checkout_Model_Type_Onepage->saveOrder()
+#13 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Core/Controller/Varien/Action.php(418): Mage_Checkout_OnepageController->saveOrderAction()
+#14 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Core/Controller/Varien/Router/Standard.php(254): Mage_Core_Controller_Varien_Action->dispatch('saveOrder')
+#15 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Core/Controller/Varien/Front.php(172): Mage_Core_Controller_Varien_Router_Standard->match(Object(Mage_Core_Controller_Request_Http))
+#16 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Core/Model/App.php(365): Mage_Core_Controller_Varien_Front->dispatch()
+#17 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/Mage.php(684): Mage_Core_Model_App->run(Array)
+#18 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/index.php(83): Mage::run('', 'store')
+#19 {main}
+2016-06-17T04:22:40+00:00 ERR (3): 
+exception 'Zend_Mail_Transport_Exception' with message 'Unable to send mail. ' in /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/lib/Zend/Mail/Transport/Sendmail.php:137
+Stack trace:
+#0 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/lib/Zend/Mail/Transport/Abstract.php(348): Zend_Mail_Transport_Sendmail->_sendMail()
+#1 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/lib/Zend/Mail.php(1194): Zend_Mail_Transport_Abstract->send(Object(Zend_Mail))
+#2 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Core/Model/Email/Template.php(451): Zend_Mail->send()
+#3 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/community/MP/Debug/Model/Core/Email/Template.php(28): Mage_Core_Model_Email_Template->send('owner@example.c...', 'Madison Island', Array)
+#4 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/community/MP/Debug/Model/Core/Email/Template.php(45): MP_Debug_Model_Core_Email_Template->parentSend('owner@example.c...', 'Madison Island', Array)
+#5 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Core/Model/Email/Template.php(508): MP_Debug_Model_Core_Email_Template->send('owner@example.c...', 'Madison Island', Array)
+#6 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Checkout/Helper/Data.php(247): Mage_Core_Model_Email_Template->sendTransactional('checkout_paymen...', 'general', 'owner@example.c...', 'Madison Island', Array)
+#7 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Checkout/controllers/OnepageController.php(596): Mage_Checkout_Helper_Data->sendPaymentFailedEmail(Object(Mage_Sales_Model_Quote), 'DECLINE')
+#8 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Core/Controller/Varien/Action.php(418): Mage_Checkout_OnepageController->saveOrderAction()
+#9 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Core/Controller/Varien/Router/Standard.php(254): Mage_Core_Controller_Varien_Action->dispatch('saveOrder')
+#10 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Core/Controller/Varien/Front.php(172): Mage_Core_Controller_Varien_Router_Standard->match(Object(Mage_Core_Controller_Request_Http))
+#11 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/code/core/Mage/Core/Model/App.php(365): Mage_Core_Controller_Varien_Front->dispatch()
+#12 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/app/Mage.php(684): Mage_Core_Model_App->run(Array)
+#13 /media/anonymous/My Passport/Magento Extensions/M1-protocol-gateway/index.php(83): Mage::run('', 'store')
+#14 {main}
