@@ -33,6 +33,7 @@ class MP_Gateway_Model_Vault extends MP_Gateway_Model_Payment
         if ($response->getResultCode() == self::RESPONSE_CODE_APPROVED) {
 
             $card = Mage::getModel('mp_gateway/card')->addCard($request, $response);
+            return $card;
         }
 
         return $this;

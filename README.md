@@ -1,31 +1,58 @@
-# Magento Payment Bridge for NMI
-Create a direct Payment Method for the NMI gateway
+# Merchant Protocol Gateway
 
-### Features
+Magento extension for Merchant + Gateway.
 
-- Authorize
-- Capture a pre-authorized
-- Authorize & Capture
-- Refund
-- Save multiple cards for a customer
-- Customer can edit each of their cards
-- Customers saved cards show up as a bullet point just like all of the other payment methods do. A bullet point per saved card.
+## Version Control
 
-### Documentation
+This change log and release versions will be managed according to [keepachangelog.com](http://keepachangelog.com/) and [Semantic Versioning 2.0.0](http://semver.org/).  **Major.Features.Improvements.Fixes**
 
-[Integration](https://merchantprotocol.transactiongateway.com/merchants/resources/integration/integration_portal.php)
+## Magento Compatible Versions
 
-User | testaccountuser
------|-----
-Password | yu54ybger4cf6hw4
+* *Magento Enterprise Edition* **1.13.x** ~ **1.14.x**
+* *Magento Community Edition* **1.6.x** ~ **1.9.x**
 
-### Process
+## System Requirements
 
-##### Stage 1: Authorize Payment
-Stage 1 will be a basic payment method implementation, with a CC form, and a few actions to authorize and capture payment, and report back to Magento.
+* PHP 5.4 >
 
-##### Stage 2: Refund
-Stage 2 will take care of any refund/fraud aspect of the module. Once Stage 1 is complete, we will be able to implement this on a solid and functional base
+## Installation
 
-##### Stage 3: Enhancements
-Stage 3 will only be taken care of once Stage 1 & 2 have been fully completed and tested. Enhancements will include saving multiple cards for automatic payments.
+### Installation with [Modman](https://github.com/colinmollenhour/modman)
+
+In the Magento root folder start a modman repository:
+
+```bash
+modman init
+```
+
+Clone the module directly from github repository:
+
+```bash
+modman clone git@github.com:merchantprotocol/M1-protocol-gateway.git
+```
+
+### Manual installation
+
+Clone the project in any folder on your computer and copy the entire contents of the src folder in the Magento root directory:
+
+```bash
+cp -R path/module/src/* magento/path/
+```
+
+## Contributing
+
+1. Create a fork!
+2. Create a branch for the features: `git checkout -b my-new-feature`
+3. Make commit yours changes: `git commit -am 'Add some feature'`
+4. Give a push to branch: `git push origin my-new-feature`
+5. Create a pull request
+
+## Credits
+
+Author||Version
+--- | --- | ---
+**Merchant Protocol** | david@merchantprotocol.com | `1.3.1.0`
+
+## License
+
+All code is protected and belongs to **Merchant Protocol**.

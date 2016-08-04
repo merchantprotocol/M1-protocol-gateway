@@ -41,12 +41,7 @@
  		parent::__construct();
  		$this->setTemplate('mp_gateway/customer/tab/cards.phtml');
  	}
- 
- 	public function getRegionsUrl()
- 	{
- 		return $this->getUrl('*/json/countryRegion');
- 	}
- 
+  
  	protected function _prepareLayout()
  	{
  		$this->setChild('delete_button',
@@ -146,24 +141,51 @@
 		$fieldset->addField ( 'card_number', 'text', array (
 				'label' => $this->helper ( 'mp_gateway' )->__ ( 'Card Number' ),
 				'name' => 'card_number',
-				'required' => true 
+				'required' => true,
 		) );
 
-		$fieldset->addField ( 'expmon', 'text', array (
+		$fieldset->addField ( 'expmon', 'select', array (
 				'label' => $this->helper ( 'mp_gateway' )->__ ( 'Expiration Month' ),
 				'name' => 'expmon',
-				'required' => true
+				'required' => true,
+				'values' => array(
+					array('value' => '01', 'label' => $this->__('January')),	
+					array('value' => '02', 'label' => $this->__('February')),
+					array('value' => '03', 'label' => $this->__('March')),
+					array('value' => '04', 'label' => $this->__('April')),
+					array('value' => '05', 'label' => $this->__('May')),
+					array('value' => '06', 'label' => $this->__('June')),
+					array('value' => '07', 'label' => $this->__('July')),
+					array('value' => '08', 'label' => $this->__('August')),
+					array('value' => '09', 'label' => $this->__('September')),
+					array('value' => '10', 'label' => $this->__('October')),
+					array('value' => '11', 'label' => $this->__('November')),
+					array('value' => '12', 'label' => $this->__('December')),
+				),
 		) );
 		
-		$fieldset->addField ( 'expyear', 'text', array (
+		$years = array();
+		for ($year = date('Y'); $year < date('Y') + 10; $year++){
+			$years[] = array('value' => $year, 'label' => $this->__($year));
+		}
+		
+		$fieldset->addField ( 'expyear', 'select', array (
 				'label' => $this->helper ( 'mp_gateway' )->__ ( 'Expiration Year' ),
 				'name' => 'expyear',
-				'required' => true
+				'required' => true,
+				'values' => $years,				
+		) );
+
+		$fieldset->addField ( 'cid', 'text', array (
+				'label' => $this->helper ( 'mp_gateway' )->__ ( 'Card Security Code (CVV)' ),
+				'name' => 'cid',
+				'required' => false
 		) );
 		
  		$cardModel = Mage::getModel('mp_gateway/card');
  		$cardCollection = $cardModel->getCollection();
  		$cardCollection->addFieldToFilter('customer_id',$customer->getId());
+ 		$cardCollection->setOrder('is_default');
  		$data = array();
  		if ($cardCollection->getSize()>0){
  			foreach ($cardCollection as $card){
