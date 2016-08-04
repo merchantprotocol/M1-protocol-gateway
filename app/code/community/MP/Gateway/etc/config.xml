@@ -111,6 +111,18 @@
                 </args>
             </mp_gateway>
         </routers>
+        
+        <events>
+			<sales_quote_save_before>
+				<observers>
+					<mp_gateway_save_before_quote>
+						<type>singleton</type>
+						<class>MP_Gateway_Model_Observer</class>
+						<method>saveQuoteDeposit</method>
+					</mp_gateway_save_before_quote>
+				</observers>
+			</sales_quote_save_before>
+		</events>
     </frontend>
 
     <default>

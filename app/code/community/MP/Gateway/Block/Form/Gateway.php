@@ -22,6 +22,16 @@ class MP_Gateway_Block_Form_Gateway extends Mage_Payment_Block_Form_Cc
     {
     	return true;
     }
+    
+    /**
+     * 
+     * 
+     * @return boolean
+     */
+    public function forceSavedCards()
+    {
+    	return (bool)Mage::getStoreConfig('payment/mp_gateway/force');
+    }
 
     /**
      * Retrieve can save card configuration

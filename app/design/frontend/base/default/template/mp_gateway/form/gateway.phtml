@@ -93,7 +93,7 @@
         </li>
         <?php endif; ?>
 
-        <?php if ($this->canSaveCard()): ?>
+        <?php if (!$this->forceSavedCards() && $this->canSaveCard()): ?>
             <li id="<?php echo $_code ?>_store_in_vault_div">
                 <input type="checkbox" title="<?php echo $this->__('Save this card for future use') ?>"
                        class="input-checkbox" id="<?php echo $_code ?>_store_in_vault" name="payment[save_card]"

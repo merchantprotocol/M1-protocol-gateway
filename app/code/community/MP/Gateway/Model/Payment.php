@@ -162,6 +162,9 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
 	    		$request->setCustomerVaultId($vaultId);
             }
 
+    	} elseif ($this->getConfigData('force')) {
+    		$this->_saveCard = true;
+    		
     	} elseif (isset($paymentPost['save_card']) && (int)$paymentPost['save_card']) {
     		$this->_saveCard = true;
     	}
