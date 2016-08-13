@@ -1,7 +1,9 @@
 #!/bin/bash
 
-CONFIG_FILE="./app/etc/local.xml"
-INDEXER_FILE="shell/indexer.php"
+CWD="$(pwd)/../../.."
+
+CONFIG_FILE="$CWD/app/etc/local.xml"
+INDEXER_FILE="$CWD/shell/indexer.php"
 
 PHP_BIN=`which php`
 
@@ -10,8 +12,6 @@ read UNINSTALL
 
 if [ "$UNINSTALL" == "y" ]; then
 
-	CWD=$(pwd)
-	
 	rm -fr $CWD/app/code/community/MP/Debug/
 	rm -fr $CWD/app/code/community/MP/Gateway               
 	rm -fr $CWD/app/design/adminhtml/default/default/layout/mp_debug.xml               
