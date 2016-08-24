@@ -17,6 +17,20 @@ This change log and release versions will be managed according to [keepachangelo
 
 ## Installation
 
+Extension files are located in the following directories:
+
+- app/code/community/MP/Gateway
+- app/design/adminhtml/default/default/layout/mp_gateway.xml
+- app/design/adminhtml/default/default/template/mp_gateway
+- app/design/frontend/base/default/layout/mp_gateway.xml
+- app/design/frontend/base/default/template/mp_gateway
+- app/etc/modules/MP_Gateway.xml
+- media/mp_gateway
+- skin/adminhtml/default/default/mp_debug
+- skin/adminhtml/default/default/mp_gateway
+- skin/frontend/base/default/mp_debug
+- skin/frontend/base/default/mp_gateway
+
 ### Installation with [Modman](https://github.com/colinmollenhour/modman)
 
 In the Magento root folder start a modman repository:
@@ -28,15 +42,17 @@ modman init
 Clone the module directly from github repository:
 
 ```bash
-modman clone git@github.com:merchantprotocol/M1-protocol-gateway.git
+modman clone https://github.com/merchantprotocol/M1-core.git
+modman clone https://github.com/merchantprotocol/M1-protocol-gateway.git
 ```
 
 ### Manual installation
 
-Clone the project in any folder on your computer and copy the entire contents of the src folder in the Magento root directory:
+Download the <a href="https://github.com/merchantprotocol/M1-protocol-gateway/archive/master.zip">zip file</a> and copy the entire contents of the folder into the Magento root directory. For example:
 
 ```bash
-cp -R path/module/src/* magento/path/
+unzip ~/Downloads/M1-protocol-gateway-master.zip
+cp -R ~/Downloads/M1-protocol-gateway-master/* /var/www/html
 ```
 
 ## Contributing
