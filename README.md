@@ -55,6 +55,12 @@ unzip ~/Downloads/M1-protocol-gateway-master.zip
 cp -R ~/Downloads/M1-protocol-gateway-master/* /var/www/html
 ```
 
+### Uninstallation
+
+```bash
+php shell/mp/core.php --action uninstall --extension MP_Gateway --modman M1-protocol-gateway
+```
+
 ## Contributing
 
 1. Create a fork!
