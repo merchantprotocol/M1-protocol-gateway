@@ -178,7 +178,7 @@ class MP_Gateway_Block_Form_Deposit extends Mage_Core_Block_Template
     */
     public function hasSsCardType()
     {
-        $availableTypes = $this->getCcAvailableTypes();
+        $availableTypes = explode(',', (string)Mage::getStoreConfig('payment/mp_gateway/cctypes'));
         $ssPresenations = array_intersect(array('SS', 'SM', 'SO'), $availableTypes);
         if ($availableTypes && count($ssPresenations) > 0) {
             return true;

@@ -136,6 +136,15 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
         //If a vault ID is specified, skip validation
         if (isset($paymentPost['cc_vault_id']) && !empty($paymentPost['cc_vault_id']))
             return $this;
+        
+        //saved method
+        $infoInstance = $this->getInfoInstance();
+        if ($infoInstance){
+        	$additionalInformation = $infoInstance->getAdditionalInformation();
+        	if (is_array($additionalInformation) && isset($additionalInformation['cc_vault_id'])){
+        		return $this;
+        	}
+        }
 
         /*
         * calling parent validate function
@@ -190,6 +199,17 @@ class MP_Gateway_Model_Payment extends Mage_Payment_Model_Method_Cc
     		
     	} elseif (isset($paymentPost['save_card']) && (int)$paymentPost['save_card']) {
     		$this->_saveCard = true;
+    	} else {
+    		//saved method
+    		$additionalInformation = $this->getInfoInstance()->getAdditionalInformation();
+    		if (is_array($additionalInformation) && isset($additionalInformation['cc_vault_id'])){
+    		    $vaultId = $additionalInformation['cc_vault_id'];
+		    	if(Mage::getModel('mp_gateway/card')->isValidVault($vaultId)) {
+	                //If we pay, then this is just a basic request
+	                $request = $this->_buildBasicRequest($payment, $amount);
+		    		$request->setCustomerVaultId($vaultId);
+	            }
+    		}
     	}
 
     	return $this;

@@ -39,9 +39,5 @@ class MP_Gateway_Model_Observer
 	{
 		$quote = $observer->getQuote();
 		$post = Mage::app()->getRequest()->getParam('deposit');
-		
-		var_dump($post);
-		
-		die('test');
 	}
 }
