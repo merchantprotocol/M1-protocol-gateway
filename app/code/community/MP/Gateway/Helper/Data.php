@@ -43,8 +43,10 @@ class MP_Gateway_Helper_Data extends Mage_Core_Helper_Abstract
             //If we are looking at an order in the backend
             if (is_null($customer->getId())) {
                 $order = Mage::registry('current_order');
-                if (!is_null($order))
-                    return $order->getCustomerId();
+                if (!is_null($order) && $order->getCustomerId()){
+                	$customer = Mage::getModel('customer/customer')->load($order->getCustomerId());
+                }
+                    
             }
         }
         else {
@@ -60,7 +62,7 @@ class MP_Gateway_Helper_Data extends Mage_Core_Helper_Abstract
     public function getCustomerId()
     {
         $customer = $this->getCustomer();
-        return $customer ? (int)$customer->getId() : false;
+        return ($customer && $customer->getId())  ? (int)$customer->getId() : false;
     }
 
     /**
