@@ -28,7 +28,7 @@
 <config>
     <modules>
         <MP_Debug>
-            <active>true</active>
+            <active>false</active>
             <codePool>community</codePool>
         </MP_Debug>
     </modules>
