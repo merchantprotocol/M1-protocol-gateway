@@ -32,8 +32,6 @@ app/design/adminhtml/default/default/template/mp_gateway/customer/tab/cards.phtm
 app/design/adminhtml/default/default/template/mp_gateway/customer/cards/item.phtml app/design/adminhtml/default/default/template/mp_gateway/customer/cards/item.phtml
 app/design/adminhtml/default/default/layout/mp_gateway.xml app/design/adminhtml/default/default/layout/mp_gateway.xml
 app/etc/modules/MP_Gateway.xml app/etc/modules/MP_Gateway.xml
-CONTRIBUTING.md CONTRIBUTING.md
-README.md README.md
 media/mp_gateway/cards/cards_gw.png media/mp_gateway/cards/cards_gw.png
 media/mp_gateway/cards/cards_stripe.png media/mp_gateway/cards/cards_stripe.png
 media/mp_gateway/cards/cards_di.png media/mp_gateway/cards/cards_di.png
@@ -48,13 +46,3 @@ media/mp_gateway/cards/cards_amazon.png media/mp_gateway/cards/cards_amazon.png
 skin/frontend/base/default/mp_gateway/styles.css skin/frontend/base/default/mp_gateway/styles.css
 skin/adminhtml/default/default/mp_gateway/css/style.css skin/adminhtml/default/default/mp_gateway/css/style.css
 sh/mp/Gateway/uninstall.sh sh/mp/Gateway/uninstall.sh
-docs/mp/CONTRIBUTOR_LICENSE_AGREEMENT.md docs/mp/CONTRIBUTOR_LICENSE_AGREEMENT.md
-docs/mp/protocol-gateway/payment-method.png docs/mp/protocol-gateway/payment-method.png
-docs/mp/protocol-gateway/checkout.png docs/mp/protocol-gateway/checkout.png
-docs/mp/protocol-gateway/customer-saved-cards.png docs/mp/protocol-gateway/customer-saved-cards.png
-docs/mp/protocol-gateway/my-saved-cards.png docs/mp/protocol-gateway/my-saved-cards.png
-docs/mp/protocol-gateway/03_Configuration.md docs/mp/protocol-gateway/03_Configuration.md
-docs/mp/protocol-gateway/100_Changelog.md docs/mp/protocol-gateway/100_Changelog.md
-docs/mp/protocol-gateway/07_UnInstallation.md docs/mp/protocol-gateway/07_UnInstallation.md
-docs/mp/protocol-gateway/01_Overview.md docs/mp/protocol-gateway/01_Overview.md
-docs/mp/LICENSE.md docs/mp/LICENSE.md
