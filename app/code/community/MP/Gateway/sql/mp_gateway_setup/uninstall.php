@@ -24,6 +24,7 @@
  * @license    https://merchantprotocol.com/commercial-license/  Merchant Protocol Commercial License (MPCL 1.0)
  */
 
+/*
 $uninstaller = $this;
 $uninstaller->startUninstall();
 
@@ -33,3 +34,4 @@ $uninstaller->run("DROP TABLE IF EXISTS `{$cardTable}`;");
 $uninstaller->removeAttribute('customer', 'enable_savedcards');
 
 $uninstaller->endUninstall();
+*/
