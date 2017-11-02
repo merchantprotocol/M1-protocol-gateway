@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<config>
-    <modules>
-        <MP_Debug>
-            <active>true</active>
-            <codePool>community</codePool>
-        </MP_Debug>
-    </modules>
-</config>

@@ -1,0 +1,11 @@
+app/code/community/MP/Gateway                               app/code/community/MP/Gateway
+app/design/adminhtml/default/default/layout/mp_gateway.xml  app/design/adminhtml/default/default/layout/mp_gateway.xml
+app/design/adminhtml/default/default/template/mp_gateway    app/design/adminhtml/default/default/template/mp_gateway
+app/design/frontend/base/default/layout/mp_gateway.xml      app/design/frontend/base/default/layout/mp_gateway.xml
+app/design/frontend/base/default/template/mp_gateway        app/design/frontend/base/default/template/mp_gateway
+app/etc/modules/MP_Gateway.xml                              app/etc/modules/MP_Gateway.xml
+media/mp_gateway                                            media/mp_gateway
+skin/adminhtml/default/default/mp_debug                     skin/adminhtml/default/default/mp_debug
+skin/adminhtml/default/default/mp_gateway                   skin/adminhtml/default/default/mp_gateway
+skin/frontend/base/default/mp_debug                         skin/frontend/base/default/mp_debug
+skin/frontend/base/default/mp_gateway					    skin/frontend/base/default/mp_gateway

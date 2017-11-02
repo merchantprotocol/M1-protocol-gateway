@@ -1,6 +1,6 @@
 # Merchant Protocol Gateway
 
-Magento extension for Merchant + Gateway.
+Magento extension for accepting credit card payments using the Merchant Protocol Payment Gateway.
 
 ## Version Control
 
@@ -17,6 +17,20 @@ This change log and release versions will be managed according to [keepachangelo
 
 ## Installation
 
+Extension files are located in the following directories:
+
+- app/code/community/MP/Gateway
+- app/design/adminhtml/default/default/layout/mp_gateway.xml
+- app/design/adminhtml/default/default/template/mp_gateway
+- app/design/frontend/base/default/layout/mp_gateway.xml
+- app/design/frontend/base/default/template/mp_gateway
+- app/etc/modules/MP_Gateway.xml
+- media/mp_gateway
+- skin/adminhtml/default/default/mp_debug
+- skin/adminhtml/default/default/mp_gateway
+- skin/frontend/base/default/mp_debug
+- skin/frontend/base/default/mp_gateway
+
 ### Installation with [Modman](https://github.com/colinmollenhour/modman)
 
 In the Magento root folder start a modman repository:
@@ -28,15 +42,23 @@ modman init
 Clone the module directly from github repository:
 
 ```bash
-modman clone git@github.com:merchantprotocol/M1-protocol-gateway.git
+modman clone https://github.com/merchantprotocol/M1-core.git
+modman clone https://github.com/merchantprotocol/M1-protocol-gateway.git
 ```
 
 ### Manual installation
 
-Clone the project in any folder on your computer and copy the entire contents of the src folder in the Magento root directory:
+Download the <a href="https://github.com/merchantprotocol/M1-protocol-gateway/archive/master.zip">zip file</a> and copy the entire contents of the folder into the Magento root directory. For example:
 
 ```bash
-cp -R path/module/src/* magento/path/
+unzip ~/Downloads/M1-protocol-gateway-master.zip
+cp -R ~/Downloads/M1-protocol-gateway-master/* /var/www/html
+```
+
+### Uninstallation
+
+```bash
+php shell/mp/core.php --action uninstall --extension MP_Gateway --modman M1-protocol-gateway
 ```
 
 ## Contributing
@@ -53,6 +75,22 @@ Author||Version
 --- | --- | ---
 **Merchant Protocol** | david@merchantprotocol.com | `1.3.1.0`
 
-## License
+## NOTICE OF LICENSE
 
-All code is protected and belongs to **Merchant Protocol**.
+	This source file is subject to the Merchant Protocol Commercial License (MPCL 1.0)
+	that is bundled with this package in the file LICENSE.md.
+	It is also available through the world-wide-web at this URL:
+	https://merchantprotocol.com/commercial-license/
+	If you did not receive a copy of the license and are unable to
+	obtain it through the world-wide-web, please send an email
+	to info@merchantprotocol.com so we can send you a copy immediately.
+        
+	DISCLAIMER
+        
+	Do not edit or add to this file if you wish to upgrade to newer
+	versions in the future. If you wish to customize the extension for your
+	needs please refer to http://www.merchantprotocol.com for more information.
+	
+	Copyright (c) 2006-2016 Merchant Protocol LLC. and affiliates (https://merchantprotocol.com/)
+	https://merchantprotocol.com/commercial-license/  Merchant Protocol Commercial License (MPCL 1.0)
+	
