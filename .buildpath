@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<buildpath>
+	<buildpathentry kind="src" path="app/code/community/MP/Gateway/Block/Adminhtml/Customer/Edit/Tab"/>
+	<buildpathentry kind="src" path="app/code/community/MP/Gateway/Block/Customer"/>
+	<buildpathentry kind="src" path="app/code/community/MP/Gateway/Block/Form"/>
+	<buildpathentry kind="src" path="app/code/community/MP/Gateway/Block/Info"/>
+	<buildpathentry kind="src" path="app/code/community/MP/Gateway/controllers"/>
+	<buildpathentry kind="src" path="app/code/community/MP/Gateway/Helper"/>
+	<buildpathentry kind="src" path="app/code/community/MP/Gateway/Model"/>
+	<buildpathentry kind="src" path="app/code/community/MP/Gateway/sql/mp_gateway_setup"/>
+	<buildpathentry kind="src" path="app/code/community/MP/Gateway/Test/Model"/>
+	<buildpathentry kind="src" path="app/design/adminhtml/default/default/template/mp_gateway/customer/cards"/>
+	<buildpathentry kind="src" path="app/design/adminhtml/default/default/template/mp_gateway/customer/tab"/>
+	<buildpathentry kind="src" path="app/design/adminhtml/default/default/template/mp_gateway/form"/>
+	<buildpathentry kind="src" path="app/design/frontend/base/default/template/mp_gateway/customer"/>
+	<buildpathentry kind="src" path="app/design/frontend/base/default/template/mp_gateway/form"/>
+	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
+</buildpath>

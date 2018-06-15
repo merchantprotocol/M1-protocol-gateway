@@ -1,6 +1,6 @@
-# Merchant Protocol Gateway
+# Mage Plugins Gateway
 
-Magento extension for accepting credit card payments using the Merchant Protocol Payment Gateway.
+Magento extension for accepting credit card payments using the Mage Plugins Payment Gateway.
 
 ## Version Control
 
@@ -73,24 +73,24 @@ php shell/mp/core.php --action uninstall --extension MP_Gateway --modman M1-prot
 
 Author||Version
 --- | --- | ---
-**Merchant Protocol** | david@merchantprotocol.com | `1.3.1.0`
+**Mage Plugins** | david@mageplugins.net | `1.3.1.0`
 
 ## NOTICE OF LICENSE
 
-	This source file is subject to the Merchant Protocol Commercial License (MPCL 1.0)
+	This source file is subject to the Mage Plugins Commercial License (MPCL 1.0)
 	that is bundled with this package in the file LICENSE.md.
 	It is also available through the world-wide-web at this URL:
-	https://merchantprotocol.com/commercial-license/
+	https://mageplugins.net/commercial-license/
 	If you did not receive a copy of the license and are unable to
 	obtain it through the world-wide-web, please send an email
-	to info@merchantprotocol.com so we can send you a copy immediately.
+	to mageplugins@gmail.com so we can send you a copy immediately.
         
 	DISCLAIMER
         
 	Do not edit or add to this file if you wish to upgrade to newer
 	versions in the future. If you wish to customize the extension for your
-	needs please refer to http://www.merchantprotocol.com for more information.
+	needs please refer to https://www.mageplugins.net for more information.
 	
-	Copyright (c) 2006-2016 Merchant Protocol LLC. and affiliates (https://merchantprotocol.com/)
-	https://merchantprotocol.com/commercial-license/  Merchant Protocol Commercial License (MPCL 1.0)
+	Copyright (c) 2006-2018 Mage Plugins Inc. and affiliates (https://mageplugins.net/)
+	https://mageplugins.net/commercial-license/  Mage Plugins Commercial License (MPCL 1.0)
 	
